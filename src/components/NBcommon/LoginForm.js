@@ -11,6 +11,42 @@ class LoginForm extends Component {
     this.props.loginUser({email, password});
   }
   
+  loginButton(props){
+    if(props.error != ''){
+      if(props.failed) {
+        return <Button 
+                block
+                danger
+              >
+                <Text>Request a new password.</Text>
+              </Button>
+        }
+      return <Button 
+              block
+              warning
+              onPress={() => this.loginPress()}
+            >
+              <Text>Login failed. Please Try Again!</Text>
+            </Button>
+    }
+    else if (props.loading){
+      return <Button 
+              block
+              onPress={() => this.loginPress()}
+            >
+              <Text>L O A D I N G</Text>
+            </Button>
+    }
+    else {
+      return <Button 
+              block
+              onPress={() => this.loginPress()}
+            >
+              <Text>Login</Text>
+            </Button>
+    }
+  }
+
   render() {
     return (
       <Card>
@@ -31,22 +67,15 @@ class LoginForm extends Component {
             value={this.props.password}
           />
         </InputGroup>
-        <Button 
-          block
-          onPress={() => this.loginPress()}
-          >
-          <Text>Login</Text>
-        </Button>
+        {this.loginButton(this.props)}
       </Card>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    email: state.auth.email,
-    password: state.auth.password 
-  };
+const mapStateToProps = ({auth}) => {
+  const {email, password, error, loading, failed } = auth;
+  return { email, password, error, loading, failed };
 };
 
 export default connect(mapStateToProps, {
