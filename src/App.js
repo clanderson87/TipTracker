@@ -6,11 +6,12 @@ import {
   Content,
   Body,
   Footer,
-  Card
+  Card, 
+  Text,
 } from 'native-base';
-import { Text } from 'react-native';
+import ReduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import firebase from 'firebase';
 import FIREBASE_SECRETS from '../secrets/FIREBASE_SECRETS';
 import reducers from './reducers';
@@ -23,8 +24,10 @@ class App extends Component {
   }
   
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
+
     return (
-      <Provider store={createStore(reducers)}>
+      <Provider store={store}>
         <Container>
           <Header>
             <Title>
