@@ -5,7 +5,8 @@ import {
   Title,
   Content,
   Body,
-  Footer
+  Footer,
+  Card
 } from 'native-base';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
@@ -13,6 +14,8 @@ import { createStore } from 'redux';
 import firebase from 'firebase';
 import FIREBASE_SECRETS from '../secrets/FIREBASE_SECRETS';
 import reducers from './reducers';
+
+import LoginForm from './components/NBcommon/LoginForm';
 
 class App extends Component {
   componentDidMount() {
@@ -29,9 +32,7 @@ class App extends Component {
             </Title>
           </Header>
           <Content>
-            <Text>
-              Main Text!
-            </Text>
+            <LoginForm />
           </Content>
           <Footer>
             <Text>
