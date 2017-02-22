@@ -5,18 +5,16 @@ import { Card, InputGroup, Input, Button, Text } from 'native-base';
 import { emailChanged } from '../../actions'
 
 class LoginForm extends Component {
-  onEmailChange(text){
-
-  }
   
   render() {
     return (
       <Card>
         <InputGroup underline>
           <Input
-            onChangeText={this.onEmailChange.bind(this)} 
+            onChangeText={text => this.props.emailChanged(text)} 
             label='email'
             placeholder='email'
+            value={this.props.email}
           />
         </InputGroup>
         <InputGroup underline>
@@ -34,4 +32,10 @@ class LoginForm extends Component {
   }
 }
 
-export default connect(null, {emailChanged} )(LoginForm);
+const mapStateToProps = state => {
+  return {
+    email: state.auth.email
+  };
+};
+
+export default connect(mapStateToProps, {emailChanged})(LoginForm);
