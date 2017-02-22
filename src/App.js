@@ -15,7 +15,7 @@ import reducers from './reducers';
 class App extends Component {
   render() {
     return (
-      <Provider store={createStore()}>
+      <Provider store={createStore(reducers)}>
         <Container>
           <Header>
             <Title>
