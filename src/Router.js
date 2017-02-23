@@ -1,7 +1,9 @@
 import React from 'react';
-import { Scene, Router } from 'react-native-router-flux';
+import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/NBcommon/LoginForm';
 import RestaurantList from './components/RestaurantList';
+import RestaurantCreate from './components/RestaurantCreate';
+
 
 const RouterComponent = () => {
   return (
@@ -19,6 +21,14 @@ const RouterComponent = () => {
           key="restaurantList"
           component={RestaurantList}
           title="My Restaurants"
+          rightTitle="+"
+          onRight={() => Actions.restaurantCreate()}
+          initial
+        />
+        <Scene
+          key="restaurantCreate"
+          component="RestaurantCreate"
+          title="Find a restaurant"
         />
       </Scene>
     </Router>
