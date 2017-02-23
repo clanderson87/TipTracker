@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card, InputGroup, Input, Button, Text } from 'native-base';
+import { Card, InputGroup, Input, Button, Text, Spinner } from 'native-base';
 
 import { emailChanged, passwordChanged, loginUser } from '../../actions'
 
@@ -11,6 +11,8 @@ class LoginForm extends Component {
     this.props.loginUser({email, password});
   }
   
+  // for the req a new password case, probably want to seperate into another component. Lots more conditional logic.
+
   loginButton(props){
     if(props.error != ''){
       if(props.failed) {
@@ -32,9 +34,9 @@ class LoginForm extends Component {
     else if (props.loading){
       return <Button 
               block
-              onPress={() => this.loginPress()}
+              disabled
             >
-              <Text>L O A D I N G</Text>
+              <Spinner />
             </Button>
     }
     else {
@@ -58,6 +60,7 @@ class LoginForm extends Component {
             value={this.props.email}
           />
         </InputGroup>
+        
         <InputGroup underline>
           <Input
             secureTextEntry

@@ -1,4 +1,4 @@
-import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL } from '../actions/types';
+import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER } from '../actions/types';
 const INITIAL_STATE = { 
   email: '', 
   password: '', 
@@ -17,15 +17,16 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, email: payload }; //es6 spread operator
     case PASSWORD_CHANGED:
       return { ...state, password: payload };
+    case LOGIN_USER:
+      return { ...state, loading: true, error: ''};
     case LOGIN_USER_SUCCESS:
-      return { ...state, user: payload, error: '' };
+      return { ...state, ...INITIAL_STATE, user: payload };
     case LOGIN_USER_FAIL:
-      console.log("failCount is ", failCount);
       failCount++;
       if (failCount > 3){
-        return { ...state, error: "Authentication failed :(", password: '', failed: true}
+        return { ...state, error: "Authentication failed :(", password: '', failed: true, loading: false}
       }
-      return { ...state, error: "Authentication failed :(", password: ''}
+      return { ...state, error: "Authentication failed :(", password: '', loading: false}
 
     default:
       return state;
