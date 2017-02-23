@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { 
   Container, 
-  Header,
-  Title,
-  Content,
   Body,
   Footer,
-  Card, 
   Text,
 } from 'native-base';
 import ReduxThunk from 'redux-thunk';
@@ -29,14 +25,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Container>
-          <Header>
-            <Title>
-              Main Title!
-            </Title>
-          </Header>
-          <Content>
             <LoginForm />
-          </Content>
           <Footer>
             <Text>
               Main footer!

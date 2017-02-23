@@ -1,66 +1,71 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card, InputGroup, Input, Button, Text, Spinner } from 'native-base';
+import { Card,
+  InputGroup,
+  Input,
+  Button,
+  Text,
+  Spinner,
+  Header,
+  Title,
+  Content } from 'native-base';
+import firebase from 'firebase';
 
 import { emailChanged, passwordChanged, loginUser } from '../../actions'
 
 class LoginForm extends Component {
 
   loginPress(){
-    const { email, password } = this.props;
-    this.props.loginUser({email, password});
+    const { email, password, failed } = this.props;
+    if(failed == false){
+      this.props.loginUser({email, password});
+    } else {
+      this.props.loginUser({email, password, failed});
+    }
   }
+
+  // newPasswordValidateAndSend(email){
+  //   let arr = email.split();
+  //   (arr.includes('@') && arr.includes('.')
+  // }
   
   // for the req a new password case, probably want to seperate into another component. Lots more conditional logic.
 
   loginButton(props){
-    if(props.error != ''){
-      if(props.failed) {
-        return <Button 
-                block
-                danger
-              >
-                <Text>Request a new password.</Text>
-              </Button>
-        }
-      return <Button 
-              block
-              warning
-              onPress={() => this.loginPress()}
-            >
-              <Text>Login failed. Please Try Again!</Text>
-            </Button>
+
+    renderTextInLoginButton = (props) => {
+      if(props.failed){
+        return <Text>Request a new password</Text>
+      } else if (props.loading){
+        return <Spinner />
+      } else if (props.error != ''){
+        return <Text>Try Again!</Text>
+      } else {
+        return <Text>Login in or signup!</Text>
+      }
     }
-    else if (props.loading){
-      return <Button 
-              block
-              disabled
-            >
-              <Spinner />
-            </Button>
+      
+    return (
+      <Button 
+        block
+        disabled={!(props.email.includes("@") 
+                  && props.email.includes(".") 
+                  && props.password.length > 6)
+                  || props.loading}
+        onPress={() => this.loginPress()}
+      >
+        {renderTextInLoginButton(this.props)}
+      </Button>
+    )
+  };
+
+
+  renderPasswordField(props) {
+    if(this.props.failed){
+      return;
     }
     else {
-      return <Button 
-              block
-              onPress={() => this.loginPress()}
-            >
-              <Text>Login</Text>
-            </Button>
-    }
-  }
-
-  render() {
-    return (
-      <Card>
-        <InputGroup underline>
-          <Input
-            onChangeText={text => this.props.emailChanged(text)} 
-            label='email'
-            placeholder='email'
-            value={this.props.email}
-          />
-        </InputGroup>
-        
+      return (
         <InputGroup underline>
           <Input
             secureTextEntry
@@ -70,8 +75,28 @@ class LoginForm extends Component {
             value={this.props.password}
           />
         </InputGroup>
-        {this.loginButton(this.props)}
-      </Card>
+      );
+    };
+  };
+
+  render() {
+    return (
+      <Content>
+        <Header><Title>Sign up or Login!</Title></Header>
+        <Card>
+          <InputGroup underline>
+            <Input
+              onChangeText={text => this.props.emailChanged(text)} 
+              label='email'
+              placeholder='email'
+              value={this.props.email}
+            />
+          </InputGroup>
+          {this.renderPasswordField(this.props)}
+          <Text>{this.props.error}</Text>
+          {this.loginButton(this.props)}
+        </Card>
+      </Content>
     )
   }
 }

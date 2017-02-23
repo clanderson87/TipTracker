@@ -4,7 +4,9 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  LOGIN_USER_NEEDS_NEW_PASS,
+  CREATE_NEW_USER
 } from './types';
 
 export const emailChanged = (text) => {
@@ -21,29 +23,52 @@ export const passwordChanged = (text) => {
   };
 };
 
-export const loginUser = ({ email, password }) => {
+export const loginUser = ({ email, password, failed = null }) => {
   return (dispatch) => {
-    const logUserSuccess = user => {
-      dispatch({ 
-        type: LOGIN_USER_SUCCESS, 
-        payload: user 
-      });
-    }
-
-    const logUserFail = user => {
+    
+    const logUserFail = (msg=null) => {
       dispatch({
-        type: LOGIN_USER_FAIL
-      })
+        type: LOGIN_USER_FAIL,
+        payload: msg
+      });
+    };
+
+    if(failed){
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => 
+          dispatch({ 
+            type: LOGIN_USER_NEEDS_NEW_PASS
+          }))
+        .catch(
+          (err) => {
+            if(err.code === "auth/user-not-found"){
+              dispatch({
+                type: CREATE_NEW_USER
+              });
+            }
+            else {
+              logUserFail(err.message);
+            };
+          }
+        )
     }
+    else {
+      const logUserSuccess = user => {
+        dispatch({ 
+          type: LOGIN_USER_SUCCESS, 
+          payload: user 
+        });
+      }
 
-    dispatch({ type: LOGIN_USER })
+      dispatch({ type: LOGIN_USER })
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(user => logUserSuccess(user))
-      .catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(user => logUserSuccess(user))
-          .catch(() => logUserFail());
-      })
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(user => logUserSuccess(user))
+        .catch(() => {
+          firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(user => logUserSuccess(user))
+            .catch((err) => logUserFail(err.message));
+        })
+    }
   };
 };
