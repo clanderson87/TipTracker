@@ -16,7 +16,8 @@ class RestaurantList extends Component {
           listViewDisplayed='auto' // true/false/undefined
           fetchDetails={true}
           renderDescription={(row) => row.description} // custom description render
-          onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+          onPress={(data, details = null) => {
+             // 'details' is provided when fetchDetails = true
           }}
           getDefaultValue={() => {
             return ''; // text input default value
@@ -42,31 +43,29 @@ class RestaurantList extends Component {
           predefinedPlaces={[]}
         />
       )
+    } else {
+      return (
+        <Button 
+          block
+          onPress={this.props.enableSearch}
+          >
+          <Text>Add Restaurant</Text>
+        </Button>
+      )
     }
   }
 
   render() {
     return(
       <Card>
-        <Text>Ruby Tuesday</Text>
-        <Text>Yolos</Text>
-        <Text>Chagos</Text>
-        <Text>F. Scotts</Text>
-        <Text>The Southern</Text>
-        <Button 
-          block
-          onPress={this.startSearch(this.props)}
-          >
-          <Text>Add Restaurant</Text>
-        </Button>
+        {this.startSearch()}
       </Card>
     );
   };
 };
 
-
-const mapStateToProps = ({ srch }) => {
-  const { search } = srch;
+const mapStateToProps = ({ searchObj }) => {
+  const { search } = searchObj;
   return { search };
 };
 

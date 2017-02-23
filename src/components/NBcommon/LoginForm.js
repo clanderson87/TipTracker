@@ -9,10 +9,17 @@ import {
   Spinner
 } from 'native-base';
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 
 import { emailChanged, passwordChanged, loginUser } from '../../actions'
 
 class LoginForm extends Component {
+  componentDidMount(){
+    if(this.props.user !== undefined && this.props.user !== null){
+      console.log("User is ", this.props.user);
+      Actions.main();
+    }
+  }
 
   loginPress(){
     const { email, password, failed } = this.props;
@@ -90,8 +97,8 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = ({auth}) => {
-  const {email, password, error, loading, failed } = auth;
-  return { email, password, error, loading, failed };
+  const {email, password, error, loading, failed, user } = auth;
+  return { email, password, error, loading, failed, user };
 };
 
 export default connect(mapStateToProps, {

@@ -4,5 +4,5 @@ import SearchReducer from './SearchReducer';
 
 export default combineReducers({
   auth: AuthReducer,
-  search: SearchReducer
+  searchObj: SearchReducer
 })
