@@ -27,7 +27,7 @@ const RouterComponent = () => {
         />
         <Scene
           key="restaurantCreate"
-          component="RestaurantCreate"
+          component={RestaurantCreate}
           title="Find a restaurant"
         />
       </Scene>
