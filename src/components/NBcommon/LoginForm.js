@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card,
+import { 
+  Card,
   InputGroup,
   Input,
   Button,
   Text,
-  Spinner,
-  Header,
-  Title,
-  Content } from 'native-base';
+  Spinner
+} from 'native-base';
 import firebase from 'firebase';
 
 import { emailChanged, passwordChanged, loginUser } from '../../actions'
@@ -73,8 +72,6 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Content>
-        <Header><Title>Sign up or Login!</Title></Header>
         <Card>
           <InputGroup underline>
             <Input
@@ -88,7 +85,6 @@ class LoginForm extends Component {
           <Text>{this.props.error}</Text>
           {this.loginButton(this.props)}
         </Card>
-      </Content>
     )
   }
 }

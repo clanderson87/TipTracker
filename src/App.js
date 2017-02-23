@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import FIREBASE_SECRETS from '../secrets/FIREBASE_SECRETS';
 import reducers from './reducers';
 
-import LoginForm from './components/NBcommon/LoginForm';
+import Router from './Router';
 
 class App extends Component {
   componentDidMount() {
@@ -24,14 +24,7 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <Container>
-            <LoginForm />
-          <Footer>
-            <Text>
-              Main footer!
-            </Text>
-          </Footer>
-        </Container>
+        <Router />
       </Provider>
     )
   }
