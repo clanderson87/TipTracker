@@ -24,13 +24,6 @@ class LoginForm extends Component {
     }
   }
 
-  // newPasswordValidateAndSend(email){
-  //   let arr = email.split();
-  //   (arr.includes('@') && arr.includes('.')
-  // }
-  
-  // for the req a new password case, probably want to seperate into another component. Lots more conditional logic.
-
   loginButton(props){
 
     renderTextInLoginButton = (props) => {
