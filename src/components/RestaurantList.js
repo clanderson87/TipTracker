@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Text, Button } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import { enableSearch } from '../actions/searchActions'
+import { enableSearch, chooseRestaurant } from '../actions/searchActions'
 import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
 
 class RestaurantList extends Component {
@@ -17,7 +17,16 @@ class RestaurantList extends Component {
           fetchDetails={true}
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
-             // 'details' is provided when fetchDetails = true
+            const { name, geometry, rating, formatted_address, id, price_level } = details;
+            {this.props.chooseRestaurant({ 
+              name,
+              geometry,
+              rating,
+              formatted_address,
+              gId: id,
+              price: price_level
+              })
+            }// 'details' is provided when fetchDetails = true
           }}
           getDefaultValue={() => {
             return ''; // text input default value
@@ -49,8 +58,16 @@ class RestaurantList extends Component {
           block
           onPress={this.props.enableSearch}
           >
-          <Text>Add Restaurant</Text>
+          <Text>Add New Restaurant</Text>
         </Button>
+      )
+    }
+  };
+
+  renderRestaurant(){
+    if(this.props.restaurant !== undefined){
+      return(
+        <Text>{this.props.restaurant.name}</Text>
       )
     }
   }
@@ -59,16 +76,18 @@ class RestaurantList extends Component {
     return(
       <Card>
         {this.startSearch()}
+        {this.renderRestaurant()}
       </Card>
     );
   };
 };
 
 const mapStateToProps = ({ searchObj }) => {
-  const { search } = searchObj;
-  return { search };
+  const { search, restaurant } = searchObj;
+  return { search, restaurant };
 };
 
 export default connect(mapStateToProps, {
-  enableSearch
+  enableSearch,
+  chooseRestaurant
 })(RestaurantList);
