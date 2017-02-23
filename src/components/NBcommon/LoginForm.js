@@ -52,7 +52,6 @@ class LoginForm extends Component {
     )
   };
 
-
   renderPasswordField(props) {
     if(this.props.failed){
       return;
