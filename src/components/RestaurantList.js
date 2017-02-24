@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Text, Button } from 'native-base';
+import { Card, Text, Button, View } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import { enableSearch, chooseRestaurant } from '../actions/searchActions'
@@ -7,7 +7,9 @@ import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
 
 class RestaurantList extends Component {
   startSearch(){
-    if(this.props.search){
+    console.log("this.props.restaurant is ", this.props.restaurant);
+    console.log("this.props.search is ", this.props.search);
+    if(this.props.search && this.props.restaurant == undefined){
       return (
         <GooglePlacesAutocomplete
           placeholder='Search'
@@ -31,6 +33,7 @@ class RestaurantList extends Component {
           getDefaultValue={() => {
             return ''; // text input default value
           }}
+          
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
             key: GOOGLE_PLACES_API_KEY,
@@ -67,19 +70,29 @@ class RestaurantList extends Component {
   renderRestaurant(){
     if(this.props.restaurant !== undefined){
       return(
-        <Text>{this.props.restaurant.name}</Text>
+        <Card>
+          <Text>{/*stylize this text! And also the other props in this area!*/}
+            {this.props.restaurant.name}
+          </Text>
+        </Card>
       )
     }
   }
 
   render() {
     return(
-      <Card>
+      <View style={this.styles.viewStyle}>
         {this.startSearch()}
         {this.renderRestaurant()}
-      </Card>
+      </View>
     );
   };
+
+  styles = {
+    viewStyle: {
+      flex: 2
+    }
+  }
 };
 
 const mapStateToProps = ({ searchObj }) => {

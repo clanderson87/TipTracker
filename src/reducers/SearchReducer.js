@@ -1,5 +1,5 @@
 import { ENABLE_SEARCH, CHOOSE_RESTAURANT } from '../actions/types';
-const INITIAL_STATE = { search: false, restaurant: {} };
+const INITIAL_STATE = { search: false };
 
 export default (state = INITIAL_STATE, action) => {
   switch(action.type){
