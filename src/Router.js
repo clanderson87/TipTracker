@@ -2,7 +2,6 @@ import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/NBcommon/LoginForm';
 import RestaurantList from './components/RestaurantList';
-import RestaurantCreate from './components/RestaurantCreate';// maybe I don't need this after all
 
 const RouterComponent = () => {
 
@@ -22,11 +21,6 @@ const RouterComponent = () => {
           component={RestaurantList}
           title="My Restaurants"
           initial
-        />
-        <Scene
-          key="restaurantCreate"
-          component={RestaurantCreate}
-          title="Find a restaurant"
         />
       </Scene>
     </Router>

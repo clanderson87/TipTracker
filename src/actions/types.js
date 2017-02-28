@@ -10,3 +10,4 @@ export const CREATE_NEW_USER = 'create_new_user';
 //search state
 export const ENABLE_SEARCH = 'enable_search';
 export const CHOOSE_RESTAURANT = 'choose_restaurant';
+export const CLEAR_RESTAURANT_SELECTION = 'clear_restaurant_selection';

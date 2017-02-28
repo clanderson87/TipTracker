@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { Card, Text, Button, View } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import { enableSearch, chooseRestaurant } from '../actions/searchActions'
+import firebase from 'firebase';
+import { enableSearch, chooseRestaurant, clearRestaurantSelection } from '../actions/searchActions'
 import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
 
 class RestaurantList extends Component {
+  componentDidMount(){
+    //firebase.auth()
+    //get users Restaurants
+  }
+
   startSearch(){
-    console.log("this.props.restaurant is ", this.props.restaurant);
-    console.log("this.props.search is ", this.props.search);
     if(this.props.search && this.props.restaurant == undefined){
       return (
         <GooglePlacesAutocomplete
@@ -19,14 +23,28 @@ class RestaurantList extends Component {
           fetchDetails={true}
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
-            const { name, geometry, rating, formatted_address, id, price_level } = details;
+            const { name, geometry, rating, formatted_address, id, price_level, photos } = details;
             {this.props.chooseRestaurant({ 
               name,
               geometry,
               rating,
               formatted_address,
               gId: id,
-              price: price_level
+              price: price_level,
+              photos: {
+                a: {
+                  photo_html: photos[0].html_attributions,
+                  photo_reference: photos[0].photo_reference
+                },
+                b: {
+                  photo_html: photos[1].html_attributions,
+                  photo_reference: photos[1].photo_reference
+                },
+                c: {
+                  photo_html: photos[2].html_attributions,
+                  photo_reference: photos[2].photo_reference
+                }
+              }
               })
             }// 'details' is provided when fetchDetails = true
           }}
@@ -56,14 +74,16 @@ class RestaurantList extends Component {
         />
       )
     } else {
-      return (
-        <Button 
-          block
-          onPress={this.props.enableSearch}
-          >
-          <Text>Add New Restaurant</Text>
-        </Button>
-      )
+      if(!this.props.search){
+        return (
+          <Button 
+            block
+            onPress={this.props.enableSearch}
+            >
+            <Text>Add New Restaurant</Text>
+          </Button>
+        )
+      }
     }
   };
 
@@ -73,7 +93,13 @@ class RestaurantList extends Component {
         <Card>
           <Text>{/*stylize this text! And also the other props in this area!*/}
             {this.props.restaurant.name}
+            {/*<RestaurantDetail />goes here*/}
           </Text>
+          <Button 
+            danger
+            onPress={() => this.props.clearRestaurantSelection()}>
+            <Text>Cancel</Text>
+          </Button>
         </Card>
       )
     }
@@ -102,5 +128,6 @@ const mapStateToProps = ({ searchObj }) => {
 
 export default connect(mapStateToProps, {
   enableSearch,
-  chooseRestaurant
+  chooseRestaurant,
+  clearRestaurantSelection
 })(RestaurantList);
