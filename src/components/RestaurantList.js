@@ -3,7 +3,7 @@ import { Card, Text, Button, View } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import firebase from 'firebase';
-import { enableSearch, chooseRestaurant, clearRestaurantSelection } from '../actions/searchActions'
+import { enableSearch, chooseRestaurant, clearRestaurantSelection, addRestaurant } from '../actions/searchActions'
 import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
 
 class RestaurantList extends Component {
@@ -100,6 +100,10 @@ class RestaurantList extends Component {
             onPress={() => this.props.clearRestaurantSelection()}>
             <Text>Cancel</Text>
           </Button>
+          <Button
+            onPress={()=> this.props.addRestaurant()}>
+            <Text>Add</Text>
+          </Button>
         </Card>
       )
     }
@@ -129,5 +133,6 @@ const mapStateToProps = ({ searchObj }) => {
 export default connect(mapStateToProps, {
   enableSearch,
   chooseRestaurant,
-  clearRestaurantSelection
+  clearRestaurantSelection,
+  addRestaurant
 })(RestaurantList);
