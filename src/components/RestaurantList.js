@@ -24,12 +24,12 @@ class RestaurantList extends Component {
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
             console.log(details);
-            const { name, geometry, rating, formatted_address, id, price_level, photos } = details;
+            const { name, geometry, rating, formatted_address, place_id, price_level, photos } = details;
             {this.props.chooseRestaurant({ 
               name,
               geometry,
               formatted_address,
-              gId: id,
+              gId: place_id,
               price: price_level || 0,
               rating: rating || 0,
               photos: {
