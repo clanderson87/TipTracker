@@ -8,8 +8,8 @@ import {
   CREATE_NEW_USER
 } from '../actions/types';
 const INITIAL_STATE = { 
-  email: '', 
-  password: '', 
+  email: 'test@test.com', //FOR DEV PURPOSES ONLY TAKE THIS OUT
+  password: 'password', // LIKEWISE
   user: null, 
   error: '', 
   loading: false,
@@ -24,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
   console.log("Action is ", action);
   switch (type) {
     case EMAIL_CHANGED:
-      return { ...state, email: payload }; //es6 spread operator
+      return { ...state, email: payload };
     case PASSWORD_CHANGED:
       return { ...state, password: payload };
     case LOGIN_USER:

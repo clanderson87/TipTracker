@@ -12,3 +12,5 @@ export const ENABLE_SEARCH = 'enable_search';
 export const CHOOSE_RESTAURANT = 'choose_restaurant';
 export const CLEAR_RESTAURANT_SELECTION = 'clear_restaurant_selection';
 export const ADD_RESTAURANT = 'add_restaurant';
+export const RESTAURANT_SUCCESSFULLY_ADDED = 'restaurant_successfully_added';
+export const RESTAURANT_ADD_FAILED = 'restaurant_add_failed';

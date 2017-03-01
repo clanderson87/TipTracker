@@ -23,14 +23,15 @@ class RestaurantList extends Component {
           fetchDetails={true}
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
+            console.log(details);
             const { name, geometry, rating, formatted_address, id, price_level, photos } = details;
             {this.props.chooseRestaurant({ 
               name,
               geometry,
-              rating,
               formatted_address,
               gId: id,
-              price: price_level,
+              price: price_level || 0,
+              rating: rating || 0,
               photos: {
                 a: {
                   photo_html: photos[0].html_attributions,
@@ -44,7 +45,7 @@ class RestaurantList extends Component {
                   photo_html: photos[2].html_attributions,
                   photo_reference: photos[2].photo_reference
                 }
-              }
+              } || null
               })
             }// 'details' is provided when fetchDetails = true
           }}
@@ -101,7 +102,7 @@ class RestaurantList extends Component {
             <Text>Cancel</Text>
           </Button>
           <Button
-            onPress={()=> this.props.addRestaurant()}>
+            onPress={()=> this.props.addRestaurant(this.props.restaurant)}>
             <Text>Add</Text>
           </Button>
         </Card>

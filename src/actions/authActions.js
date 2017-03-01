@@ -27,7 +27,7 @@ export const passwordChanged = (text) => {
 export const loginUser = ({ email, password, failed = null }) => {
   return (dispatch) => {
     
-    const logUserFail = (msg=null) => {
+    const logUserFail = (msg = null) => {
       dispatch({
         type: LOGIN_USER_FAIL,
         payload: msg
