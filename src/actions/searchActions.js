@@ -16,22 +16,23 @@ import {
 export const getInitialRestaurants = () => {
   const { currentUser } = firebase.auth();
   return (dispatch) => {
+    
     firebase.database().ref(`users/${currentUser.uid}/restaurants`)
-      .once('value')
-        .then((snapshot) => {
+      .on('value', (snapshot) => {
             dispatch({
               type: INITIAL_RESTAURANTS_AQUIRED,
               payload: snapshot.val()
             })
-        })
-        .catch((err) => 
-          dispatch({
-            type: INITIAL_RESTAURANTS_FAILED,
-            payload: err
-          })
-        )
-  };
-};
+        }
+      )
+      // .catch((err) => 
+      //     dispatch({
+      //       type: INITIAL_RESTAURANTS_FAILED,
+      //       payload: err
+      //     })
+      // )
+  }
+}
 
 export const enableSearch = () => {
   return {
@@ -59,7 +60,6 @@ export const addRestaurant = restaurant => {
 
   return (dispatch) => {
     const successAddAction = (rest) => {
-      getInitialRestaurants();
       dispatch({
         type: RESTAURANT_SUCCESSFULLY_ADDED,
         payload: rest

@@ -14,15 +14,29 @@ class RestaurantList extends Component {
   renderList(){
     if(!this.props.search){
       console.log("this.props.myRests is ", this.props.myRestaurants);
-      return(
-        <List 
-          dataArray={this.props.myRestaurants}
-          renderRow={(res) => 
+      if(this.props.error){
+        return(
+          <Text>{this.props.error}</Text>
+        )
+      };
+      if(this.props.myRestaurants === undefined){
+        return(
+          <Text>
+            Get started by adding a restaurant!
+          </Text>
+        )
+      } else {
+        return(
+          <List 
+            dataArray={this.props.myRestaurants}
+            renderRow={(res) => 
             <ListItem>
               <Text>{res.name}</Text>
             </ListItem>
-          }/>
-      )
+            }
+          />
+        )
+      }
     }
   }
 
@@ -145,8 +159,8 @@ class RestaurantList extends Component {
 };
 
 const mapStateToProps = ({ searchObj }) => {
-  const { search, restaurant, myRestaurants } = searchObj;
-  return { search, restaurant, myRestaurants };
+  const { search, restaurant, myRestaurants, error } = searchObj;
+  return { search, restaurant, myRestaurants, error };
 };
 
 export default connect(mapStateToProps, {
