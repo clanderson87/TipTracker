@@ -19,6 +19,7 @@ export const getInitialRestaurants = () => {
     
     firebase.database().ref(`users/${currentUser.uid}/restaurants`)
       .on('value', (snapshot) => {
+            console.log("snapshot is ", snapshot.val());
             dispatch({
               type: INITIAL_RESTAURANTS_AQUIRED,
               payload: snapshot.val()

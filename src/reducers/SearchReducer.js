@@ -20,8 +20,7 @@ export default (state = INITIAL_STATE, action) => {
     case ENABLE_SEARCH:
       return { ...state, search: true }
     case CHOOSE_RESTAURANT:
-      console.log(action.payload);
-      return { ...state, restaurant: action.payload }
+      return { ...state, search: false, restaurant: action.payload }
     case CLEAR_RESTAURANT_SELECTION:
       return { ...state, restaurant: undefined }
     case RESTAURANT_SUCCESSFULLY_ADDED:
