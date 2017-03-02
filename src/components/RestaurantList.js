@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
-import { Card, Text, Button, View, InputGroup, Input } from 'native-base';
+import { Card, Text, Button, View, InputGroup, Input, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import firebase from 'firebase';
-import { enableSearch, chooseRestaurant, clearRestaurantSelection, addRestaurant } from '../actions/searchActions'
+import { enableSearch, chooseRestaurant, clearRestaurantSelection, addRestaurant, getInitialRestaurants } from '../actions/searchActions'
 import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
 
 class RestaurantList extends Component {
   componentDidMount(){
-    //firebase.auth()
-    //get users Restaurants
+    this.props.getInitialRestaurants();
+  }
+
+  renderList(){
+    if(!this.props.search){
+      console.log("this.props.myRests is ", this.props.myRestaurants);
+      return(
+        <List 
+          dataArray={this.props.myRestaurants}
+          renderRow={(res) => 
+            <ListItem>
+              <Text>{res.name}</Text>
+            </ListItem>
+          }/>
+      )
+    }
   }
 
   startSearch(){
@@ -77,12 +91,15 @@ class RestaurantList extends Component {
     } else {
       if(!this.props.search){
         return (
-          <Button 
-            block
-            onPress={this.props.enableSearch}
-            >
-            <Text>Add New Restaurant</Text>
-          </Button>
+          <View>
+            {this.renderList()}
+            <Button 
+              block
+              onPress={this.props.enableSearch}
+              >
+              <Text>Add New Restaurant</Text>
+            </Button>
+          </View>
         )
       }
     }
@@ -93,40 +110,9 @@ class RestaurantList extends Component {
       return(
         //So... I need to input-ize all of this so the user has a chance to alter the data before storage.
         <Card>
-          <InputGroup underline>
-            <Input
-              label='Restaurant Name' 
-              onChangeText={text => this.props.restaurantChanged('name', text)}
-              value={this.props.restaurant.name}
-            />
-          </InputGroup>
-          <InputGroup underline>
-            <Input 
-              label='Restaurant Address'
-              onChangeText={text => this.props.restaurantChanged('address', text)}
-              value={this.props.restaurant.address}
-              disabled
-            />{/* this can just be for verification purposes*/}
-          </InputGroup>
-          <InputGroup underline>
-            <Input
-              label='Restaurant Rating'
-              onChangeText={num => this.props.RestaurantChanged('rating', num)}
-              value={this.props.restaurant.rating.toString()}
-              disabled
-            />
-          </InputGroup>
-          <InputGroup underline>
-            <Input
-              label='Average Check'
-              onChangeText={num => this.props.restaurantChanged('price', num)}
-              value={this.props.restaurant.price.toString()}
-            />
-          </InputGroup>
-          {/*<Card>
-          <Text>{/*stylize this text! And also the other props in this area!
+          <Text>{/*stylize this text! And also the other props in this area!*/}
             {this.props.restaurant.name}
-            {/*<RestaurantDetail />goes here*
+            {/*<RestaurantDetail />goes here*/}
           </Text>
           <Button 
             danger
@@ -137,7 +123,6 @@ class RestaurantList extends Component {
             onPress={()=> this.props.addRestaurant(this.props.restaurant)}>
             <Text>Add</Text>
           </Button>
-        </Card>*/}
         </Card>
       )
     }
@@ -160,13 +145,14 @@ class RestaurantList extends Component {
 };
 
 const mapStateToProps = ({ searchObj }) => {
-  const { search, restaurant } = searchObj;
-  return { search, restaurant };
+  const { search, restaurant, myRestaurants } = searchObj;
+  return { search, restaurant, myRestaurants };
 };
 
 export default connect(mapStateToProps, {
   enableSearch,
   chooseRestaurant,
   clearRestaurantSelection,
-  addRestaurant
+  addRestaurant,
+  getInitialRestaurants
 })(RestaurantList);

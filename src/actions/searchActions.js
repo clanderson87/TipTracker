@@ -6,9 +6,32 @@ import {
   CLEAR_RESTAURANT_SELECTION, 
   ADD_RESTAURANT,
   RESTAURANT_ADD_FAILED,
-  RESTAURANT_SUCCESSFULLY_ADDED
+  RESTAURANT_SUCCESSFULLY_ADDED,
+  INITIAL_RESTAURANTS_AQUIRED,
+  INITIAL_RESTAURANTS_FAILED
 } from './types';
 
+
+
+export const getInitialRestaurants = () => {
+  const { currentUser } = firebase.auth();
+  return (dispatch) => {
+    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
+      .once('value')
+        .then((snapshot) => {
+            dispatch({
+              type: INITIAL_RESTAURANTS_AQUIRED,
+              payload: snapshot.val()
+            })
+        })
+        .catch((err) => 
+          dispatch({
+            type: INITIAL_RESTAURANTS_FAILED,
+            payload: err
+          })
+        )
+  };
+};
 
 export const enableSearch = () => {
   return {
@@ -31,11 +54,12 @@ export const clearRestaurantSelection = () => {
 
 export const addRestaurant = restaurant => {
   const { currentUser } = firebase.auth();
-  const { gId } = restaurant;
+  const { gId, name } = restaurant;
   const fbRef = firebase.database();
 
   return (dispatch) => {
     const successAddAction = (rest) => {
+      getInitialRestaurants();
       dispatch({
         type: RESTAURANT_SUCCESSFULLY_ADDED,
         payload: rest
@@ -50,7 +74,7 @@ export const addRestaurant = restaurant => {
     }
 
     fbRef.ref(`users/${currentUser.uid}/restaurants`) //adding to user's restaurants
-      .push(gId)
+      .push({gId, name})
         .then(
           successAddAction(restaurant)
         )
