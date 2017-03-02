@@ -31,7 +31,7 @@ export const clearRestaurantSelection = () => {
 
 export const addRestaurant = restaurant => {
   const { currentUser } = firebase.auth();
-  const { name, gId, price, photos, formatted_address, geometry, rating } = restaurant;
+  const { gId } = restaurant;
   const fbRef = firebase.database();
 
   return (dispatch) => {
@@ -50,28 +50,10 @@ export const addRestaurant = restaurant => {
     }
 
     fbRef.ref(`users/${currentUser.uid}/restaurants`) //adding to user's restaurants
-      .push({ name, gId, geometry })
-      .then(
-        fbRef.ref(`restaurants/${gId}`).once('value') //checking if in main restaurants repo
-        .then((snapshot) => {
-          if(!snapshot.exists()){ //if not, add it to repo
-            fbRef.ref(`restaurants/${gId}`)
-              .push({name, formatted_address, geometry, price, photos, rating})
-              .then(() => {
-                successAddAction(restaurant);
-              })
-              .catch(err => failAddAction(err));
-          }
-          else {
-            console.log("Firebase snapshot is ", snapshot)
-            successAddAction(restaurant);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          failAddAction(err);
-        })
-      )
-      .catch((err) => { console.log(err), failAddAction(err) });
+      .push(gId)
+        .then(
+          successAddAction(restaurant)
+        )
+        .catch(err => failAddAction(err));
   }
 }

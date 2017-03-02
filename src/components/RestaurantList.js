@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Text, Button, View } from 'native-base';
+import { Card, Text, Button, View, InputGroup, Input } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import firebase from 'firebase';
@@ -28,7 +28,7 @@ class RestaurantList extends Component {
             {this.props.chooseRestaurant({ 
               name,
               geometry,
-              formatted_address,
+              address: formatted_address,
               gId: place_id,
               price: price_level || 0,
               rating: rating || 0,
@@ -68,7 +68,7 @@ class RestaurantList extends Component {
           GooglePlacesSearchQuery={{
             // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
             rankby: 'prominence',
-            type: 'food',
+            type: 'restaurant',
           }}
           filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
           predefinedPlaces={[]}
@@ -91,10 +91,34 @@ class RestaurantList extends Component {
   renderRestaurant(){
     if(this.props.restaurant !== undefined){
       return(
+        //So... I need to input-ize all of this so the user has a chance to alter the data before storage.
         <Card>
-          <Text>{/*stylize this text! And also the other props in this area!*/}
+          <InputGroup underline>
+          <Input
+            label='Restaurant Name' 
+            onChangeText={text => this.props.restaurantChanged('name', text)}
+            value={this.props.restaurant.name}
+          />
+          <Input 
+            label='Restaurant Address'
+            onChangeText={text => this.props.restaurantChanged('address', text)}
+            value={this.props.restaurant.address}
+          />
+          <Input
+            label='Restaurant Rating'
+            onChangeText={text => this.props.RestaurantChanged('rating', text)}
+            value={this.props.restaurant.rating}
+          />
+          <Input
+            label='Average Check'
+            onChangeText={text => this.props.restaurantChanged('price', text)}
+            value={this.props.restaurant.price}
+          />
+          </InputGroup>
+          {/*<Card>
+          <Text>{/*stylize this text! And also the other props in this area!
             {this.props.restaurant.name}
-            {/*<RestaurantDetail />goes here*/}
+            {/*<RestaurantDetail />goes here*
           </Text>
           <Button 
             danger
@@ -105,6 +129,7 @@ class RestaurantList extends Component {
             onPress={()=> this.props.addRestaurant(this.props.restaurant)}>
             <Text>Add</Text>
           </Button>
+        </Card>*/}
         </Card>
       )
     }
