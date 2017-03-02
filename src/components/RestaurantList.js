@@ -94,26 +94,34 @@ class RestaurantList extends Component {
         //So... I need to input-ize all of this so the user has a chance to alter the data before storage.
         <Card>
           <InputGroup underline>
-          <Input
-            label='Restaurant Name' 
-            onChangeText={text => this.props.restaurantChanged('name', text)}
-            value={this.props.restaurant.name}
-          />
-          <Input 
-            label='Restaurant Address'
-            onChangeText={text => this.props.restaurantChanged('address', text)}
-            value={this.props.restaurant.address}
-          />
-          <Input
-            label='Restaurant Rating'
-            onChangeText={text => this.props.RestaurantChanged('rating', text)}
-            value={this.props.restaurant.rating}
-          />
-          <Input
-            label='Average Check'
-            onChangeText={text => this.props.restaurantChanged('price', text)}
-            value={this.props.restaurant.price}
-          />
+            <Input
+              label='Restaurant Name' 
+              onChangeText={text => this.props.restaurantChanged('name', text)}
+              value={this.props.restaurant.name}
+            />
+          </InputGroup>
+          <InputGroup underline>
+            <Input 
+              label='Restaurant Address'
+              onChangeText={text => this.props.restaurantChanged('address', text)}
+              value={this.props.restaurant.address}
+              disabled
+            />{/* this can just be for verification purposes*/}
+          </InputGroup>
+          <InputGroup underline>
+            <Input
+              label='Restaurant Rating'
+              onChangeText={num => this.props.RestaurantChanged('rating', num)}
+              value={this.props.restaurant.rating.toString()}
+              disabled
+            />
+          </InputGroup>
+          <InputGroup underline>
+            <Input
+              label='Average Check'
+              onChangeText={num => this.props.restaurantChanged('price', num)}
+              value={this.props.restaurant.price.toString()}
+            />
           </InputGroup>
           {/*<Card>
           <Text>{/*stylize this text! And also the other props in this area!
