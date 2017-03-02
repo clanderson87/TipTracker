@@ -25,12 +25,6 @@ export const getInitialRestaurants = () => {
             })
         }
       )
-      // .catch((err) => 
-      //     dispatch({
-      //       type: INITIAL_RESTAURANTS_FAILED,
-      //       payload: err
-      //     })
-      // )
   }
 }
 
