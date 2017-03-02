@@ -31,7 +31,7 @@ export const clearRestaurantSelection = () => {
 
 export const addRestaurant = restaurant => {
   const { currentUser } = firebase.auth();
-  const { name, gId, price, photos, geometry, rating } = restaurant;
+  const { name, gId, price, photos, formatted_address, geometry, rating } = restaurant;
   const fbRef = firebase.database();
 
   return (dispatch) => {
@@ -56,7 +56,7 @@ export const addRestaurant = restaurant => {
         .then((snapshot) => {
           if(!snapshot.exists()){ //if not, add it to repo
             fbRef.ref(`restaurants/${gId}`)
-              .push({name, geometry, price, photos, rating})
+              .push({name, formatted_address, geometry, price, photos, rating})
               .then(() => {
                 successAddAction(restaurant);
               })
