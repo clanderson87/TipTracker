@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card,
+import { 
+  Card,
   InputGroup,
   Input,
   Button,
   Text,
-  Spinner,
-  Header,
-  Title,
-  Content } from 'native-base';
+  Spinner
+} from 'native-base';
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 
 import { emailChanged, passwordChanged, loginUser } from '../../actions'
 
 class LoginForm extends Component {
+  componentDidMount(){
+    if(this.props.user !== undefined && this.props.user !== null){
+      console.log("User is ", this.props.user);
+      Actions.main();
+    }
+  }
 
   loginPress(){
     const { email, password, failed } = this.props;
@@ -73,8 +79,6 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Content>
-        <Header><Title>Sign up or Login!</Title></Header>
         <Card>
           <InputGroup underline>
             <Input
@@ -88,14 +92,13 @@ class LoginForm extends Component {
           <Text>{this.props.error}</Text>
           {this.loginButton(this.props)}
         </Card>
-      </Content>
     )
   }
 }
 
 const mapStateToProps = ({auth}) => {
-  const {email, password, error, loading, failed } = auth;
-  return { email, password, error, loading, failed };
+  const {email, password, error, loading, failed, user } = auth;
+  return { email, password, error, loading, failed, user };
 };
 
 export default connect(mapStateToProps, {
