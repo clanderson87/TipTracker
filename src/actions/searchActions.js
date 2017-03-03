@@ -76,3 +76,22 @@ export const addRestaurant = restaurant => {
         .catch(err => failAddAction(err));
   }
 }
+
+export const deleteRestaurant = restaurant => {
+  const { currentUser } = firebase.auth();
+  const toDelete = 
+    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
+      .orderByChild('gId').equalTo(`${restaurant.gId}`).once('value').then(snapshot => console.log(snapshot.val()));
+  
+  console.log(toDelete);
+  
+  
+
+  // toDelete.remove()
+  //   .then(() => {
+  //     console.log("Remove succeeded.")
+  //   })
+  //   .catch((err) => {
+  //     console.log("Remove failed: " + err.message)
+  //   });;
+}

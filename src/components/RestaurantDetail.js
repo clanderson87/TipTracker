@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'native-base';
 import { connect } from 'react-redux';
+import { 
+  clearRestaurantSelection, 
+  addRestaurant,
+  deleteRestaurant
+} from '../actions/searchActions'
 
 class RestaurantDetail extends Component {
   
@@ -27,7 +32,16 @@ class RestaurantDetail extends Component {
           </Button>
         </View>
       )
-    }
+    } else {
+        return (
+          <View>
+            <Button
+              danger
+              onPress={() => this.props.deleteRestaurant(this.props.restaurant)}
+            ></Button>
+          </View>
+        )
+      }
   };
   
   render(){
@@ -48,5 +62,7 @@ const mapStateToProps = ({ searchObj }) => {
   return { restaurant, myRestaurants };
 };
 export default connect (mapStateToProps, {
-
+  clearRestaurantSelection,
+  addRestaurant,
+  deleteRestaurant
 })(RestaurantDetail);
