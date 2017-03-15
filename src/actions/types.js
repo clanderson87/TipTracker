@@ -16,3 +16,14 @@ export const RESTAURANT_SUCCESSFULLY_ADDED = 'restaurant_successfully_added';
 export const RESTAURANT_ADD_FAILED = 'restaurant_add_failed';
 export const INITIAL_RESTAURANTS_AQUIRED = 'initial_restaurants_aquired';
 export const INITIAL_RESTAURANTS_FAILED = 'initial_restaurants_failed';
+
+//tip state
+export const ADD_TIP_SUCCESS = 'add_tip_success';
+export const ADD_TIP_FAIL = 'add_tip_fail';
+export const GET_INITIAL = 'get_tips';
+export const ACTIVATE_FAB = 'activate_fab';
+export const CANCEL_FAB = 'cancel_fab';
+export const TIP_CHANGED = 'tip_changed';
+export const DATE_CHANGED = 'date_changed';
+export const RESTAURANT_CHANGED = 'restaurant_changed';
+
