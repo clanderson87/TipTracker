@@ -35,12 +35,12 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case CANCEL_FAB:
       return { ...state, addingModal: false }
     case TIP_SHIFT_CHANGED:
-      return { ...state, tipShift: payload.tipShift }
+      return { ...state, tipShift: payload }
     case TIP_RESTAURANT_CHANGED:
-      return { ...state, tipRestaurant: payload.tipRestaurant }
+      return { ...state, tipRestaurant: payload }
     case TIP_DATE_CHANGED:
-      return { ...state, tipDate: payload.tipDate }
+      return { ...state, tipDate: payload }
     case TIP_AMOUNT_CHANGED:
-      return { ...state, tipAmount: payload.tipAmount }
+      return { ...state, tipAmount: payload }
   }
 }
