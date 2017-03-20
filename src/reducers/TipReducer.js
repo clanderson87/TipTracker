@@ -3,7 +3,11 @@ import {
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
   ACTIVATE_FAB,
-  CANCEL_FAB
+  CANCEL_FAB,
+  TIP_SHIFT_CHANGED,
+  TIP_RESTAURANT_CHANGED,
+  TIP_DATE_CHANGED,
+  TIP_AMOUNT_CHANGED
 } from '../actions/types';
 const INITIAL_STATE = { 
   usersTips: [],
@@ -15,7 +19,7 @@ const INITIAL_STATE = {
   tipAmount: null,
   tipDate: null,
   tipShift: null,
-  tipRestaurant: null,
+  tipRestaurant: null
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -30,5 +34,13 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return { ...state, addingModal: true }
     case CANCEL_FAB:
       return { ...state, addingModal: false }
+    case TIP_SHIFT_CHANGED:
+      return { ...state, tipShift: payload.tipShift }
+    case TIP_RESTAURANT_CHANGED:
+      return { ...state, tipRestaurant: payload.tipRestaurant }
+    case TIP_DATE_CHANGED:
+      return { ...state, tipDate: payload.tipDate }
+    case TIP_AMOUNT_CHANGED:
+      return { ...state, tipAmount: payload.tipAmount }
   }
 }

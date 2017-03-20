@@ -23,7 +23,8 @@ export const ADD_TIP_FAIL = 'add_tip_fail';
 export const GET_INITIAL = 'get_tips';
 export const ACTIVATE_FAB = 'activate_fab';
 export const CANCEL_FAB = 'cancel_fab';
-export const TIP_CHANGED = 'tip_changed';
-export const DATE_CHANGED = 'date_changed';
-export const RESTAURANT_CHANGED = 'restaurant_changed';
+export const TIP_AMOUNT_CHANGED = 'tip_amount_changed';
+export const TIP_DATE_CHANGED = 'tip_date_changed';
+export const TIP_RESTAURANT_CHANGED = 'tip_restaurant_changed';
+export const TIP_SHIFT_CHANGED = 'tip_shift_changed';
 
