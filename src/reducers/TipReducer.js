@@ -25,22 +25,24 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, { type, payload }) => {
   switch(type){
     case GET_INITIAL:
-      return { ...state, usersTips: payload.tips, usersAverage: payload.avg }
+      return { ...state, usersTips: payload.tips, usersAverage: payload.avg };
     case ADD_TIP_SUCCESS:
-      return { ...state, addingModal: false, message: payload.message }
+      return { ...state, addingModal: false, message: payload.message };
     case ADD_TIP_FAIL:
-      return { ...state, message: payload.message }
+      return { ...state, message: payload.message };
     case ACTIVATE_FAB:
-      return { ...state, addingModal: true }
+      return { ...state, addingModal: true };
     case CANCEL_FAB:
-      return { ...state, addingModal: false }
+      return { ...state, addingModal: false };
     case TIP_SHIFT_CHANGED:
-      return { ...state, tipShift: payload }
+      return { ...state, tipShift: payload };
     case TIP_RESTAURANT_CHANGED:
-      return { ...state, tipRestaurant: payload }
+      return { ...state, tipRestaurant: payload };
     case TIP_DATE_CHANGED:
-      return { ...state, tipDate: payload }
+      return { ...state, tipDate: payload };
     case TIP_AMOUNT_CHANGED:
-      return { ...state, tipAmount: payload }
+      return { ...state, tipAmount: payload };
+    default:
+      return state;
   }
 }

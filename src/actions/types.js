@@ -20,7 +20,7 @@ export const INITIAL_RESTAURANTS_FAILED = 'initial_restaurants_failed';
 //tip state
 export const ADD_TIP_SUCCESS = 'add_tip_success';
 export const ADD_TIP_FAIL = 'add_tip_fail';
-export const GET_INITIAL = 'get_tips';
+export const GET_INITIAL = 'get_initial';
 export const ACTIVATE_FAB = 'activate_fab';
 export const CANCEL_FAB = 'cancel_fab';
 export const TIP_AMOUNT_CHANGED = 'tip_amount_changed';

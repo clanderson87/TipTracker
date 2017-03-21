@@ -14,29 +14,39 @@ import {
 
 //private methods
 
-const getUsersAverage = (provided) => {
-  let total = provided.tips.reduce((total, { amount }) =>{
-    return total += amount;
+const generatePayload = (provided) => {
+  const providedArr = Object.values(provided);
+  let usersRestaurants = [];
+  let total = providedArr.reduce((totes, val) => {
+    if(!usersRestaurants.includes(val.restaurant)){
+      usersRestaurants.push(val.restaurant);
+    };
+    return totes += val.amount;
   }, 0);
-  return total/provided.tips.length;
+  return { 
+    usersRestaurants, 
+    avg: total/providedArr.length 
+  };
 };
+
+//exported
 
 export const getInitial = () => {
   const { currentUser } = firebase.auth();
   return (dispatch) => {
-    firebase.database().ref(`users/${currentUser.uid}/tips`)
-      .orderByChild('amount').limitToLast(10)
-      .on('child_added', (snapshot) => {
+    firebase.database().ref('tips/')
+      .orderByChild('uuid').limitToLast(10).equalTo(currentUser.uid)
+      .on('value', (snapshot) => {
             console.log('snapshot is ', snapshot.val());
-            let payload = {};
-            //payload.tips = getUsersAverage(snapshot.val(). ...etc);
+            payload = generatePayload(snapshot.val());
+            payload.tips = snapshot.val();
+            console.log("new payload is ", payload)
             //Add logic to extract usersAverage, usersProjected, and usersRestaurants here. Add them to payload.
             dispatch({
               type: GET_INITIAL,
-              payload: snapshot.val() //replace this with the payload object once it has been constructed.
+              payload
             });
-        }
-      );
+        });
   };
 };
 
