@@ -14,13 +14,13 @@ import {
 
 class TipsDashboard extends Component {
   componentDidMount(){
-    console.log("this.props is ", this.props);
     this.props.getInitial();
   }
   
   render(){
     return(
       <View>
+        
         <List dataArray={this.props.usersTips}
           renderRow={(tip) => 
             <ListItem>
