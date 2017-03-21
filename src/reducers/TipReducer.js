@@ -1,9 +1,10 @@
 import { 
   GET_INITIAL,
+  RESTAURANTS_AQUIRED,
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
-  ACTIVATE_FAB,
-  CANCEL_FAB,
+  ACTIVATE_BTN,
+  CANCEL_BTN,
   TIP_SHIFT_CHANGED,
   TIP_RESTAURANT_CHANGED,
   TIP_DATE_CHANGED,
@@ -26,13 +27,15 @@ export default (state = INITIAL_STATE, { type, payload }) => {
   switch(type){
     case GET_INITIAL:
       return { ...state, usersTips: payload.tips, usersAverage: payload.avg };
+    case RESTAURANTS_AQUIRED:
+      return { ...state, usersRestaurants: payload }
     case ADD_TIP_SUCCESS:
       return { ...state, addingModal: false, message: payload.message };
     case ADD_TIP_FAIL:
       return { ...state, message: payload.message };
-    case ACTIVATE_FAB:
+    case ACTIVATE_BTN:
       return { ...state, addingModal: true };
-    case CANCEL_FAB:
+    case CANCEL_BTN:
       return { ...state, addingModal: false };
     case TIP_SHIFT_CHANGED:
       return { ...state, tipShift: payload };

@@ -3,6 +3,7 @@ import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/NBcommon/LoginForm';
 import RestaurantList from './components/RestaurantList';
 import TipsDashboard from './components/TipsDashboard';
+import AddTipForm from './components/AddTipForm';
 
 const RouterComponent = () => {
   return (
@@ -22,14 +23,18 @@ const RouterComponent = () => {
           title="My Restaurants"
           initial
         />
-      </Scene>
-        commneting out to work on tips dashboard
-      */} 
+      </Scene>*/}
       <Scene key="main">
         <Scene
           key="tipsDashboard"
           component={TipsDashboard}
           title="My Tips"
+          initial
+        />
+        <Scene
+          key='AddTip'
+          component={AddTipForm}
+          title="Add Tip"
         />
       </Scene>
     </Router>

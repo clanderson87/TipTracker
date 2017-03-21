@@ -18,11 +18,12 @@ export const INITIAL_RESTAURANTS_AQUIRED = 'initial_restaurants_aquired';
 export const INITIAL_RESTAURANTS_FAILED = 'initial_restaurants_failed';
 
 //tip state
+export const RESTAURANTS_AQUIRED = 'restaurants_aquired';
 export const ADD_TIP_SUCCESS = 'add_tip_success';
 export const ADD_TIP_FAIL = 'add_tip_fail';
 export const GET_INITIAL = 'get_initial';
-export const ACTIVATE_FAB = 'activate_fab';
-export const CANCEL_FAB = 'cancel_fab';
+export const ACTIVATE_BTN = 'activate_BTN';
+export const CANCEL_BTN= 'cancel_BTN';
 export const TIP_AMOUNT_CHANGED = 'tip_amount_changed';
 export const TIP_DATE_CHANGED = 'tip_date_changed';
 export const TIP_RESTAURANT_CHANGED = 'tip_restaurant_changed';

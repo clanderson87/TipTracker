@@ -2,10 +2,11 @@ import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import { 
   GET_INITIAL,
+  RESTAURANTS_AQUIRED,
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
-  ACTIVATE_FAB,
-  CANCEL_FAB,
+  ACTIVATE_BTN,
+  CANCEL_BTN,
   TIP_SHIFT_CHANGED,
   TIP_AMOUNT_CHANGED,
   TIP_DATE_CHANGED,
@@ -14,17 +15,17 @@ import {
 
 //private methods
 
+const getUsersProjected = (provided) => {
+  //fill this in later...
+}
+
 const generatePayload = (provided, message = null) => {
   const providedArr = Object.values(provided);
-  let usersRestaurants = [];
   let total = providedArr.reduce((totes, val) => {
-    if(!usersRestaurants.includes(val.restaurant)){
-      usersRestaurants.push(val.restaurant);
-    };
     return totes += val.amount;
   }, 0);
+
   return { 
-    usersRestaurants, 
     message,
     avg: total/providedArr.length,
     tips: providedArr
@@ -33,15 +34,29 @@ const generatePayload = (provided, message = null) => {
 
 //exported
 
+export const getRestaurants = () => {
+  const { currentUser } = firebase.auth()
+
+  return (dispatch) => {
+    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
+      .once('value', (snapshot) => {
+        let payload = Object.values(snapshot.val());
+        dispatch({
+          type: RESTAURANTS_AQUIRED,
+          payload
+        });
+      }
+    );
+  };
+};
+
 export const getInitial = () => {
   const { currentUser } = firebase.auth();
   return (dispatch) => {
     firebase.database().ref('tips/')
       .orderByChild('uuid').limitToLast(10).equalTo(currentUser.uid)
       .on('value', (snapshot) => {
-            console.log('snapshot is ', snapshot.val());
             payload = generatePayload(snapshot.val());
-            console.log("new payload is ", payload)
             //Add logic to extract usersAverage, usersProjected, and usersRestaurants here. Add them to payload.
             dispatch({
               type: GET_INITIAL,
@@ -75,15 +90,15 @@ export const addTip = (tip) => {
   };
 };
 
-export const activateFab = () => {
+export const activateBtn= () => {
   return {
-    type: ACTIVATE_FAB
+    type: ACTIVATE_BTN
   };
 };
 
-export const cancelFab = () => {
+export const cancelBtn = () => {
   return {
-    type: CANCEL_FAB
+    type: CANCEL_BTN
   };
 };
 

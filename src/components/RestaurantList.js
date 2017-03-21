@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Card, Text, Button, View, InputGroup, Input, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import firebase from 'firebase';
 import { enableSearch, 
   chooseRestaurant, 
   clearRestaurantSelection, 
