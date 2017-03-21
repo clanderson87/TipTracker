@@ -28,6 +28,7 @@ class TipsDashboard extends Component {
             </ListItem>
           }
         />
+        <Fab>+</Fab>
       </View>
     )
   }
