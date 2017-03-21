@@ -14,7 +14,9 @@ import {
 
 //private methods
 
-const generatePayload = (provided) => {
+const tipRef = firebase.database().ref('tips/');
+
+const generatePayload = (provided, message = null) => {
   const providedArr = Object.values(provided);
   let usersRestaurants = [];
   let total = providedArr.reduce((totes, val) => {
@@ -25,7 +27,9 @@ const generatePayload = (provided) => {
   }, 0);
   return { 
     usersRestaurants, 
-    avg: total/providedArr.length 
+    message,
+    avg: total/providedArr.length,
+    tips: providedArr
   };
 };
 
@@ -34,12 +38,11 @@ const generatePayload = (provided) => {
 export const getInitial = () => {
   const { currentUser } = firebase.auth();
   return (dispatch) => {
-    firebase.database().ref('tips/')
+    tipRef
       .orderByChild('uuid').limitToLast(10).equalTo(currentUser.uid)
       .on('value', (snapshot) => {
             console.log('snapshot is ', snapshot.val());
             payload = generatePayload(snapshot.val());
-            payload.tips = snapshot.val();
             console.log("new payload is ", payload)
             //Add logic to extract usersAverage, usersProjected, and usersRestaurants here. Add them to payload.
             dispatch({
@@ -51,12 +54,10 @@ export const getInitial = () => {
 };
 
 export const addTip = (tip) => {
-  const { currentUser } = firebase.auth();
-  let payload = {};
+  tip.uuid = firebase.auth().currentUser.uid;
+  
   return (dispatch) => {
-
     const successAddAction = (tip) => {
-      payload = tip;
       dispatch({
         payload,
         type: ADD_TIP_SUCCESS
@@ -64,17 +65,15 @@ export const addTip = (tip) => {
     };
 
     const failAddAction = (err) => {
-      payload.message = err;
       dispatch({
         payload,
         type: ADD_TIP_FAIL
-      })
+      });
     };
 
-    firebase.database().ref(`users/${currentUser.uid}/tips`)
-      .push(tip)
-        .then(successAddAction(tip))
-        .catch(failAddAction(err));
+    tipRef.push(tip)
+      .then(successAddAction(tip))
+      .catch(failAddAction(err));
   };
 };
 
