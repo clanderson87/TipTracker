@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, List } from 'native-base';
+import { View, Text, Button, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { 
   getInitial,
@@ -21,14 +21,13 @@ class TipsDashboard extends Component {
   render(){
     return(
       <View>
-        {/*<List dataArray={this.props.usersTips}
+        <List dataArray={this.props.usersTips}
           renderRow={(tip) => 
             <ListItem>
-              <Text>{tip}</Text>  
+              <Text>{tip.amount}</Text>  
             </ListItem>
           }
-        />*/}
-        <Text>Anything is happening</Text>
+        />
       </View>
     )
   }

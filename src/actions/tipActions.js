@@ -14,8 +14,6 @@ import {
 
 //private methods
 
-const tipRef = firebase.database().ref('tips/');
-
 const generatePayload = (provided, message = null) => {
   const providedArr = Object.values(provided);
   let usersRestaurants = [];
@@ -38,7 +36,7 @@ const generatePayload = (provided, message = null) => {
 export const getInitial = () => {
   const { currentUser } = firebase.auth();
   return (dispatch) => {
-    tipRef
+    firebase.database().ref('tips/')
       .orderByChild('uuid').limitToLast(10).equalTo(currentUser.uid)
       .on('value', (snapshot) => {
             console.log('snapshot is ', snapshot.val());
@@ -70,10 +68,10 @@ export const addTip = (tip) => {
         type: ADD_TIP_FAIL
       });
     };
-
-    tipRef.push(tip)
-      .then(successAddAction(tip))
-      .catch(failAddAction(err));
+    firebase.database().ref('tips/')
+      .push(tip)
+        .then(successAddAction(tip))
+        .catch(failAddAction(err));
   };
 };
 
