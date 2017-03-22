@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   message: '',
   tipAmount: null,
   tipDate: null,
-  tipShift: null,
+  tipShift: "Lunch",
   tipRestaurant: null
 };
 

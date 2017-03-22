@@ -28,22 +28,18 @@ class AddTipForm extends Component {
     this.props.getRestaurants();
   };
 
-  renderPickerChoices(){
-    this.props.usersRestaurants.forEach((rest) => {
-      return <Text>{rest.name}</Text>
-    });
-  }
-
   renderPicker(){  
     if(this.props.usersRestaurants.length > 1){
       return (
         <Picker
           iosHeader='Select Workplace'
           mode='dropdown'
-          selectedValue={this.props.usersRestaurants[0]}
+          selectedValue={this.props.usersRestaurants[0].name}
           onValueChange={(rest) => this.tipRestuarantChanged(rest)}
         >
-          {this.renderPickerChoices()}
+          {this.props.usersRestaurants.map((rest, index) => {
+            return <Item key={index} label={rest.name} value={rest.gId} />
+          })}
         </Picker>
       );
     } else {
@@ -59,7 +55,7 @@ class AddTipForm extends Component {
             <InputGroup underline>
               <Input placeholder='$100.00' />
               <Input placeholder='date' />
-              {this.renderPickerChoices()}
+              {this.renderPicker()}
               <Picker
                 iosHeader='Select Shift'
                 mode='dropdown'
