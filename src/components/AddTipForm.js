@@ -9,7 +9,7 @@ import { Container,
   Picker,
   Card,
 } from 'native-base';
-import { Platform, DatePickerIOS, DatePickerAndroid } from 'react-native';
+import { DatePicker } from 'react-native-ui-xg';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { 
@@ -48,29 +48,24 @@ class AddTipForm extends Component {
     }
   };
 
-  showDatePicker(){
+  activateDatePicker(){
     this.props.showDatePicker();
   }
 
   renderDatePicker(){
-    if(this.props.showDatePicker){
-      if(Platform.OS === 'ios'){
-        return (
-          <DatePickerIOS
-            date={this.props.tipDate}
-            mode='date'
-            onDateChange={(date) => this.props.tipDateChanged(date)} 
+    if(this.props.datePicker){
+      return (
+        <DatePicker
+          style={{width: 200}}
+          date={this.props.tipDate}
+          mode='date'
+          placeholder={this.props.tipDate.toLocaleDateString()}
+          format='MM-DD-YYYY'
+          confirmBtnText='Confirm'
+          cancelBtnText='Cancel'
+          onDateChange={(date) => this.props.tipDateChanged(date)}
           />
-        )
-      } else{
-        return (
-          <DatePickerAndroid 
-            date={this.props.tipDate}
-            mode='default'
-            dateSetAction={(date) => this.props.tipDateChanged(date)}
-            dismissedAction />
-        )
-      }
+      )
     }
   }
 
@@ -82,9 +77,10 @@ class AddTipForm extends Component {
             <InputGroup underline>
               <Input placeholder='$100.00' />
               <Button
-                onPress={() => this.showDatePicker()}>
-                <Text>Select Date</Text>  
+                onPress={() => this.activateDatePicker()}
+              ><Text>{this.props.tipDate.toLocaleDateString()}</Text>
               </Button>
+              {this.renderDatePicker()}
               {this.renderPicker()}
               <Picker
                 iosHeader='Select Shift'
