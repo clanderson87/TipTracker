@@ -5,8 +5,8 @@ import {
   RESTAURANTS_AQUIRED,
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
-  ACTIVATE_BTN,
-  CANCEL_BTN,
+  SHOW_DATE_PICKER,
+  CANCEL_DATE_PICKER,
   TIP_SHIFT_CHANGED,
   TIP_AMOUNT_CHANGED,
   TIP_DATE_CHANGED,
@@ -90,15 +90,15 @@ export const addTip = (tip) => {
   };
 };
 
-export const activateBtn= () => {
+export const showDatePicker= () => {
   return {
-    type: ACTIVATE_BTN
+    type: SHOW_DATE_PICKER
   };
 };
 
-export const cancelBtn = () => {
+export const cancelDatePicker = () => {
   return {
-    type: CANCEL_BTN
+    type: CANCEL_DATE_PICKER
   };
 };
 

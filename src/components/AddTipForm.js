@@ -7,16 +7,17 @@ import { Container,
   Input,
   InputGroup,
   Picker,
-  Card
+  Card,
 } from 'native-base';
+import { Platform, DatePickerIOS, DatePickerAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { 
   getInitial,
   getRestaurants,
   addTip,
-  activateBtn,
-  cancelBtn,
+  showDatePicker,
+  cancelDatePicker,
   tipAmountChanged,
   tipDateChanged,
   tipRestuarantChanged,
@@ -45,6 +46,32 @@ class AddTipForm extends Component {
     } else {
       <Input placeholder={this.props.usersRestaurants.toString()} />
     }
+  };
+
+  showDatePicker(){
+    this.props.showDatePicker();
+  }
+
+  renderDatePicker(){
+    if(this.props.showDatePicker){
+      if(Platform.OS === 'ios'){
+        return (
+          <DatePickerIOS
+            date={this.props.tipDate}
+            mode='date'
+            onDateChange={(date) => this.props.tipDateChanged(date)} 
+          />
+        )
+      } else{
+        return (
+          <DatePickerAndroid 
+            date={this.props.tipDate}
+            mode='default'
+            dateSetAction={(date) => this.props.tipDateChanged(date)}
+            dismissedAction />
+        )
+      }
+    }
   }
 
   render(){
@@ -54,7 +81,10 @@ class AddTipForm extends Component {
           <Form>
             <InputGroup underline>
               <Input placeholder='$100.00' />
-              <Input placeholder='date' />
+              <Button
+                onPress={() => this.showDatePicker()}>
+                <Text>Select Date</Text>  
+              </Button>
               {this.renderPicker()}
               <Picker
                 iosHeader='Select Shift'
@@ -80,7 +110,7 @@ class AddTipForm extends Component {
 const mapStateToProps = ({ tip }) => {
   const {
     usersRestaurants,
-    addingModal,
+    datePicker,
     message,
     tipAmount,
     tipDate,
@@ -89,7 +119,7 @@ const mapStateToProps = ({ tip }) => {
   } = tip;
   return {
     usersRestaurants,
-    addingModal,
+    datePicker,
     message,
     tipAmount,
     tipDate,
@@ -100,7 +130,8 @@ const mapStateToProps = ({ tip }) => {
 
 export default connect(mapStateToProps, {
   getRestaurants,
-  cancelBtn,
+  showDatePicker,
+  cancelDatePicker,
   tipAmountChanged,
   tipRestuarantChanged,
   tipShiftChanged,
