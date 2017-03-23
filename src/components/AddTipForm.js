@@ -3,7 +3,7 @@ import { Container,
   Text, 
   Button,
   Form,
-  Item,
+  // Item,
   Input,
   InputGroup,
   Picker,
@@ -24,23 +24,28 @@ import {
   tipShiftChanged
 } from '../actions/tipActions';
 
+const Item = Picker.Item;
+
 class AddTipForm extends Component {
   componentDidMount(){
-    this.props.getRestaurants();
+    //this.props.getRestaurants();
   };
 
   renderPicker(){  
     if(this.props.usersRestaurants.length > 1){
+      console.log(this.props.tipRestaurant)
       return (
         <Picker
           iosHeader='Select Workplace'
           mode='dropdown'
-          selectedValue={this.props.usersRestaurants[0].name}
-          onValueChange={(rest) => this.tipRestuarantChanged(rest)}
-        >
-          {this.props.usersRestaurants.map((rest, index) => {
-            return <Item key={index} label={rest.name} value={rest.gId} />
-          })}
+          selectedValue={this.props.tipRestaurant}
+          onValueChange={(rest) => this.props.tipRestuarantChanged(rest)}
+        > 
+          { this.props.usersRestaurants.map((rest, index) => {
+            return (<Item key={index} label={rest.name} value={rest.gId} />)
+              }
+            )
+          }
         </Picker>
       );
     } else {
@@ -48,25 +53,18 @@ class AddTipForm extends Component {
     }
   };
 
-  activateDatePicker(){
-    this.props.showDatePicker();
-  }
-
   renderDatePicker(){
-    if(this.props.datePicker){
-      return (
-        <DatePicker
-          style={{width: 200}}
-          date={this.props.tipDate}
-          mode='date'
-          placeholder={this.props.tipDate.toLocaleDateString()}
-          format='MM-DD-YYYY'
-          confirmBtnText='Confirm'
-          cancelBtnText='Cancel'
-          onDateChange={(date) => this.props.tipDateChanged(date)}
-          />
-      )
-    }
+    return (
+      <DatePicker
+        style={{width: 200}}
+        date={this.props.tipDate}
+        mode='date'
+        format='MM-DD-YYYY'
+        confirmBtnText='Confirm'
+        cancelBtnText='Cancel'
+        onDateChange={(date) => this.props.tipDateChanged(date)}
+        />
+    )
   }
 
   render(){
@@ -75,13 +73,13 @@ class AddTipForm extends Component {
         <Card>
           <Form>
             <InputGroup underline>
-              <Input placeholder='$100.00' />
-              <Button
-                onPress={() => this.activateDatePicker()}
-              ><Text>{this.props.tipDate.toLocaleDateString()}</Text>
-              </Button>
+              <Input placeholder='$100.00' onChangeText={(val) => this.props.tipAmountChanged(val)} />
               {this.renderDatePicker()}
+            </InputGroup>
+            <InputGroup>
               {this.renderPicker()}
+            </InputGroup>
+            <InputGroup underline>
               <Picker
                 iosHeader='Select Shift'
                 mode='dropdown'

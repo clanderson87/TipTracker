@@ -20,7 +20,7 @@ const INITIAL_STATE = {
   tipAmount: null,
   tipDate: new Date(),
   tipShift: "Lunch",
-  tipRestaurant: null
+  tipRestaurant: ''
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -28,7 +28,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case GET_INITIAL:
       return { ...state, usersTips: payload.tips, usersAverage: payload.avg };
     case RESTAURANTS_AQUIRED:
-      return { ...state, usersRestaurants: payload }
+      return { ...state, usersRestaurants: payload, tipRestaurant: payload[0].gId }
     case ADD_TIP_SUCCESS:
       return { ...state, datePicker: false, message: payload.message };
     case ADD_TIP_FAIL:

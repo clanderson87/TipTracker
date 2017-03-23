@@ -17,6 +17,7 @@ import {
 class TipsDashboard extends Component {
   componentDidMount(){
     this.props.getInitial();
+    this.props.getRestaurants();
   }
   
   renderList(){
