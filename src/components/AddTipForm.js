@@ -67,13 +67,26 @@ class AddTipForm extends Component {
     )
   }
 
+  /*renderAddButton(){
+    const { tipAmount, tipDate, tipRestaurant, tipShift } = this.props
+    if((tipAmount && tipDate && tipRestaurant && tipShift)){
+      return (
+        <Button
+          success
+          onPress={() => this.props.addTip(tipAmount, tipDate, tipRestaurant, tipShift)}
+        ><Text>Add</Text>
+        </Button>
+      )
+    }
+  }*/
+
   render(){
     return(
       <Container>
-        <Card>
           <Form>
             <InputGroup underline>
               <Input placeholder='$100.00' onChangeText={(val) => this.props.tipAmountChanged(val)} />
+
               {this.renderDatePicker()}
             </InputGroup>
             <InputGroup>
@@ -94,8 +107,8 @@ class AddTipForm extends Component {
                 <Item label="Late Night" value="Late Night" />
               </Picker>
             </InputGroup>
+            {/*{this.renderAddButton()}*/}
           </Form>
-        </Card>
       </Container>
     )
   }
@@ -123,6 +136,7 @@ const mapStateToProps = ({ tip }) => {
 };
 
 export default connect(mapStateToProps, {
+  addTip,
   getRestaurants,
   showDatePicker,
   cancelDatePicker,

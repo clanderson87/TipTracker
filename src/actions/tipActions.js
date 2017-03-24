@@ -24,7 +24,6 @@ const generatePayload = (provided, message = null) => {
   let total = providedArr.reduce((totes, val) => {
     return totes += val.amount;
   }, 0);
-
   return { 
     message,
     avg: total/providedArr.length,
@@ -66,7 +65,13 @@ export const getInitial = () => {
   };
 };
 
-export const addTip = (tip) => {
+export const addTip = (amount, date, restaurant, shift) => {
+  tip = {
+    amount,
+    date,
+    restaurant,
+    shift
+  };
   tip.uuid = firebase.auth().currentUser.uid;
   
   return (dispatch) => {
@@ -85,8 +90,8 @@ export const addTip = (tip) => {
     };
     firebase.database().ref('tips/')
       .push(tip)
-        .then(successAddAction(tip))
-        .catch(failAddAction(err));
+        .then(tip => successAddAction(tip))
+        .catch(err =>failAddAction(err));
   };
 };
 
