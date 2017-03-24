@@ -6,6 +6,8 @@ import {
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
   DELETE_TIP,
+  TIP_SELECTED,
+  TIP_UNSELECTED,
   TIP_SHIFT_CHANGED,
   TIP_AMOUNT_CHANGED,
   TIP_DATE_CHANGED,
@@ -80,7 +82,7 @@ export const addTip = (amount, date, restaurant, shift) => {
         payload,
         type: ADD_TIP_SUCCESS
       });
-      Actions.tipsDashboard();
+      Actions.tipsDashboard({ type: 'reset' });
     };
 
     const failAddAction = (err) => {
@@ -111,6 +113,20 @@ export const deleteTip = (tip) => {
       }))
   }
 }
+
+export const selectTip = (tip) => {
+  console.log('selectedTip is ', tip);
+  return {
+    type: TIP_SELECTED,
+    payload: tip
+  };
+};
+
+export const unselectTip = () => {
+  return {
+    type: TIP_UNSELECTED
+  };
+};
 
 export const tipShiftChanged = (shift) => {
   return {

@@ -3,7 +3,6 @@ import { Container,
   Text, 
   Button,
   Form,
-  // Item,
   Input,
   InputGroup,
   Picker,
@@ -31,11 +30,11 @@ class AddTipForm extends Component {
 
   renderPicker(){  
     if(this.props.usersRestaurants.length > 1){
-      console.log(this.props.tipRestaurant)
       return (
         <Picker
           iosHeader='Select Workplace'
           mode='dropdown'
+          label='Select Restaurant'
           selectedValue={this.props.tipRestaurant}
           onValueChange={(rest) => this.props.tipRestuarantChanged(rest)}
         > 
@@ -66,7 +65,6 @@ class AddTipForm extends Component {
   }
 
   renderAddButton(){
-    console.log('tipAmount is ', this.props.tipAmount)
     const { tipAmount, tipDate, tipRestaurant, tipShift } = this.props
     if((tipAmount && tipDate && tipRestaurant && tipShift)){
       return (

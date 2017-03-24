@@ -6,6 +6,9 @@ import {
   getInitial,
   addTip,
   getRestaurants,
+  deleteTip,
+  selectTip,
+  unselectTip,
   tipAmountChanged,
   tipDateChanged,
   tipRestuarantChanged,
@@ -18,12 +21,17 @@ class TipsDashboard extends Component {
     this.props.getRestaurants();
   }
   
+  goToTipDetail(tip){
+    this.props.selectTip(tip);
+    Actions.TipDetail();
+  }
+
   renderList(){
     if(this.props.usersTips){
       return(
         <List dataArray={this.props.usersTips}
             renderRow={(tip) => 
-              <ListItem onPress={() => console.log("This was pressed!", tip.amount)}>
+              <ListItem onPress={() => this.goToTipDetail(tip)}>
                 <Text>{tip.amount}</Text>  
               </ListItem>
             }
@@ -34,12 +42,17 @@ class TipsDashboard extends Component {
     };
   };
 
+  goToAddScreen(){
+    this.props.unselectTip();
+    Actions.AddTip();
+  };
+
   renderAddButton(){
     return (
       <Button
         block
         success
-        onPress={()=>Actions.AddTip()}>
+        onPress={()=>this.goToAddScreen()}>
         <Text>Add Tip!</Text>
       </Button>
     );
@@ -71,7 +84,8 @@ const mapStateToProps = ({ tip }) => {
     tipAmount,
     tipDate,
     tipShift,
-    tipRestaurant 
+    tipRestaurant,
+    selectedTip
   } = tip;
   return { usersTips,
     usersAverage,
@@ -81,7 +95,8 @@ const mapStateToProps = ({ tip }) => {
     tipAmount,
     tipDate,
     tipShift,
-    tipRestaurant 
+    tipRestaurant,
+    selectedTip
   };
 };
 
@@ -89,6 +104,9 @@ export default connect(mapStateToProps, {
   getInitial,
   getRestaurants,
   addTip,
+  deleteTip,
+  selectTip,
+  unselectTip,
   tipAmountChanged,
   tipRestuarantChanged,
   tipShiftChanged,

@@ -4,6 +4,7 @@ import LoginForm from './components/NBcommon/LoginForm';
 import RestaurantList from './components/RestaurantList';
 import TipsDashboard from './components/TipsDashboard';
 import AddTipForm from './components/AddTipForm';
+import TipDetail from './components/TipDetail';
 
 const RouterComponent = () => {
   return (
@@ -35,6 +36,11 @@ const RouterComponent = () => {
           key='AddTip'
           component={AddTipForm}
           title="Add Tip"
+        />
+        <Scene
+          key='TipDetail'
+          component={TipDetail}
+          title='Details'
         />
       </Scene>
     </Router>

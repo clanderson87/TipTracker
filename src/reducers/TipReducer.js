@@ -4,6 +4,8 @@ import {
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
   DELETE_TIP,
+  TIP_SELECTED,
+  TIP_UNSELECTED,
   TIP_SHIFT_CHANGED,
   TIP_RESTAURANT_CHANGED,
   TIP_DATE_CHANGED,
@@ -18,7 +20,8 @@ const INITIAL_STATE = {
   tipAmount: null,
   tipDate: new Date(),
   tipShift: "Lunch",
-  tipRestaurant: ''
+  tipRestaurant: '', //NB: once RESTAURANTS_AQUIRED fires, tipRestaurant shouldn't be defaulted back to null
+  selectedTip: null
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -36,6 +39,21 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return { ...state, message: payload.message };
     case DELETE_TIP:
       return { ...state, message: payload.message }
+    case TIP_SELECTED:
+      return { ...state, 
+        selectedTip: payload, 
+        tipAmount: payload.amount, 
+        tipDate: payload.date, 
+        tipShift: payload.shift,
+        tipRestaurant: payload.restaurant
+      }
+    case TIP_UNSELECTED: 
+      return { ...state,
+        selectedTip: null,
+        tipAmount: null, 
+        tipDate: INITIAL_STATE.tipDate,
+        tipShift: INITIAL_STATE.tipShift,
+      }
     case TIP_SHIFT_CHANGED:
       return { ...state, tipShift: payload };
     case TIP_RESTAURANT_CHANGED:
