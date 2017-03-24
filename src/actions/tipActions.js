@@ -24,9 +24,10 @@ const generatePayload = (provided, message = null) => {
   let total = providedArr.reduce((totes, val) => {
     return totes += val.amount;
   }, 0);
+
   return { 
     message,
-    avg: total/providedArr.length,
+    avg: Math.round(total/providedArr.length),
     tips: providedArr
   };
 };
@@ -67,13 +68,15 @@ export const getInitial = () => {
 
 export const addTip = (amount, date, restaurant, shift) => {
   tip = {
-    amount,
-    date,
     restaurant,
-    shift
+    shift,
+    amount: parseInt(amount),
+    date: date.toLocaleDateString(),
+    uuid: firebase.auth().currentUser.uid
   };
-  tip.uuid = firebase.auth().currentUser.uid;
   
+  console.log('tip is ', tip);
+
   return (dispatch) => {
     const successAddAction = (tip) => {
       dispatch({
