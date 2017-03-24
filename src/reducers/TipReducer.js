@@ -3,8 +3,7 @@ import {
   RESTAURANTS_AQUIRED,
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
-  SHOW_DATE_PICKER,
-  CANCEL_DATE_PICKER,
+  DELETE_TIP,
   TIP_SHIFT_CHANGED,
   TIP_RESTAURANT_CHANGED,
   TIP_DATE_CHANGED,
@@ -35,6 +34,8 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       };
     case ADD_TIP_FAIL:
       return { ...state, message: payload.message };
+    case DELETE_TIP:
+      return { ...state, message: payload.message }
     case TIP_SHIFT_CHANGED:
       return { ...state, tipShift: payload };
     case TIP_RESTAURANT_CHANGED:

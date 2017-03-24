@@ -5,8 +5,7 @@ import {
   RESTAURANTS_AQUIRED,
   ADD_TIP_SUCCESS,
   ADD_TIP_FAIL,
-  SHOW_DATE_PICKER,
-  CANCEL_DATE_PICKER,
+  DELETE_TIP,
   TIP_SHIFT_CHANGED,
   TIP_AMOUNT_CHANGED,
   TIP_DATE_CHANGED,
@@ -96,6 +95,22 @@ export const addTip = (amount, date, restaurant, shift) => {
         .catch(err =>failAddAction(err));
   };
 };
+
+export const deleteTip = (tip) => {
+  return (dispatch) => {
+  firebase.database().ref('tips/')
+    .remove(tip)
+      .then(dispatch({
+        type: DELETE_TIP,
+      }))
+      .catch(err => dispatch({
+        type: DELETE_TIP,
+        payload: {
+          message: err
+        }
+      }))
+  }
+}
 
 export const tipShiftChanged = (shift) => {
   return {

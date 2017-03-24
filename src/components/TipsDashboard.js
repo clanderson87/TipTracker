@@ -23,7 +23,7 @@ class TipsDashboard extends Component {
       return(
         <List dataArray={this.props.usersTips}
             renderRow={(tip) => 
-              <ListItem>
+              <ListItem onPress={() => console.log("This was pressed!", tip.amount)}>
                 <Text>{tip.amount}</Text>  
               </ListItem>
             }

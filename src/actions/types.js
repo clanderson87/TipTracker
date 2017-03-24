@@ -21,6 +21,7 @@ export const INITIAL_RESTAURANTS_FAILED = 'initial_restaurants_failed';
 export const RESTAURANTS_AQUIRED = 'restaurants_aquired';
 export const ADD_TIP_SUCCESS = 'add_tip_success';
 export const ADD_TIP_FAIL = 'add_tip_fail';
+export const DELETE_TIP = 'delete_tip';
 export const GET_INITIAL = 'get_initial';
 export const TIP_AMOUNT_CHANGED = 'tip_amount_changed';
 export const TIP_DATE_CHANGED = 'tip_date_changed';
