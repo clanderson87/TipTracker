@@ -15,7 +15,6 @@ const INITIAL_STATE = {
   usersAverage: null,
   usersProjected: null,
   usersRestaurants: [],
-  datePicker: false,
   message: '',
   tipAmount: null,
   tipDate: new Date(),
@@ -30,13 +29,12 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case RESTAURANTS_AQUIRED:
       return { ...state, usersRestaurants: payload, tipRestaurant: payload[0].gId }
     case ADD_TIP_SUCCESS:
-      return { ...state, datePicker: false, message: payload.message };
+      return { ...state, 
+        message: payload.message,
+        tipAmount: null,
+      };
     case ADD_TIP_FAIL:
       return { ...state, message: payload.message };
-    case SHOW_DATE_PICKER:
-      return { ...state, datePicker: true };
-    case CANCEL_DATE_PICKER:
-      return { ...state, datePicker: false };
     case TIP_SHIFT_CHANGED:
       return { ...state, tipShift: payload };
     case TIP_RESTAURANT_CHANGED:

@@ -16,8 +16,6 @@ import {
   getInitial,
   getRestaurants,
   addTip,
-  showDatePicker,
-  cancelDatePicker,
   tipAmountChanged,
   tipDateChanged,
   tipRestuarantChanged,
@@ -131,7 +129,6 @@ class AddTipForm extends Component {
 const mapStateToProps = ({ tip }) => {
   const {
     usersRestaurants,
-    datePicker,
     message,
     tipAmount,
     tipDate,
@@ -140,7 +137,6 @@ const mapStateToProps = ({ tip }) => {
   } = tip;
   return {
     usersRestaurants,
-    datePicker,
     message,
     tipAmount,
     tipDate,
@@ -152,8 +148,6 @@ const mapStateToProps = ({ tip }) => {
 export default connect(mapStateToProps, {
   addTip,
   getRestaurants,
-  showDatePicker,
-  cancelDatePicker,
   tipAmountChanged,
   tipRestuarantChanged,
   tipShiftChanged,

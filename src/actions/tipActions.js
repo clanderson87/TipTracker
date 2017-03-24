@@ -74,8 +74,6 @@ export const addTip = (amount, date, restaurant, shift) => {
     date: date.toLocaleDateString(),
     uuid: firebase.auth().currentUser.uid
   };
-  
-  console.log('tip is ', tip);
 
   return (dispatch) => {
     const successAddAction = (tip) => {
@@ -83,6 +81,7 @@ export const addTip = (amount, date, restaurant, shift) => {
         payload,
         type: ADD_TIP_SUCCESS
       });
+      Actions.tipsDashboard();
     };
 
     const failAddAction = (err) => {
@@ -95,18 +94,6 @@ export const addTip = (amount, date, restaurant, shift) => {
       .push(tip)
         .then(tip => successAddAction(tip))
         .catch(err =>failAddAction(err));
-  };
-};
-
-export const showDatePicker= () => {
-  return {
-    type: SHOW_DATE_PICKER
-  };
-};
-
-export const cancelDatePicker = () => {
-  return {
-    type: CANCEL_DATE_PICKER
   };
 };
 
