@@ -44,7 +44,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case TIP_DATE_CHANGED:
       return { ...state, tipDate: payload };
     case TIP_AMOUNT_CHANGED:
-      return { ...state, tipAmount: payload };
+      return { ...state, tipAmount: payload.amount, message: payload.message };
     default:
       return state;
   }

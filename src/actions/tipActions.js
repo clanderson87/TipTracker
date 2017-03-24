@@ -115,10 +115,20 @@ export const tipShiftChanged = (shift) => {
 };
 
 export const tipAmountChanged = (amount) => {
+  let acceptable='0123456789.$'
+  let payload = { amount, message: '' };
+  
+  amount.split('').forEach(char => {
+    if(!acceptable.includes(char)){
+        payload.message = 'Please only use numbers and \'.\' when inputting tips!'
+        payload.amount = '';
+      };
+    })
+
   return {
     type: TIP_AMOUNT_CHANGED,
-    payload: amount
-  };
+    payload
+  }
 };
 
 export const tipDateChanged = (date) => {
