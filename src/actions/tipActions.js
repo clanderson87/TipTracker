@@ -72,7 +72,7 @@ export const addTip = (amount, date, restaurant, shift) => {
     restaurant,
     shift,
     amount: parseInt(amount),
-    date: date.toLocaleDateString(),
+    date,
     uuid: firebase.auth().currentUser.uid
   };
 

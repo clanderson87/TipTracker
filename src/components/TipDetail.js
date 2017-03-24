@@ -22,15 +22,21 @@ class TipDetail extends Component {
     })
     return rest.name;
   }
+
+  renderDateDetails(){
+    let date = new Date()
+    date.setTime(Date.parse(this.props.tipDate))
+    return date.toDateString();
+  }
   
   render(){
     return(
-      <Text>
-        {this.props.tipAmount}
-        {this.props.tipDate}
-        {this.getRestaurantName()}
-        {this.props.tipShift}
-      </Text>
+      <Card>
+        <Text>You made ${this.props.tipAmount}</Text>
+        <Text>on {this.renderDateDetails()}</Text>
+        <Text>at {this.getRestaurantName()}</Text>
+        <Text>during {this.props.tipShift}</Text>
+      </Card>
     )
   }
 }

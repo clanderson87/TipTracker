@@ -80,7 +80,6 @@ class AddTipForm extends Component {
         <Button
           disabled
           block
-          onPress={() => this.props.addTip(tipAmount, tipDate, tipRestaurant, tipShift)}
         ><Text>Add</Text>
         </Button>
       )
