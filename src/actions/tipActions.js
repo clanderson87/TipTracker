@@ -20,17 +20,35 @@ const getUsersProjected = (provided) => {
   //fill this in later...
 }
 
-const generatePayload = (provided, message = null) => {
-  const providedArr = Object.values(provided);
-  let total = providedArr.reduce((totes, val) => {
-    return totes += val.amount;
-  }, 0);
+const generatePayload = (provided = null, message = null) => {
+  const starterTip = {
+    amount: 100,
+    date: Date.now().toLocaleString,
+    restaurant: "YumYum's Deli!",
+    shift: 'Lunch',
+    uuid: firebase.auth().currentUser.uid
+  }
+  let payload;
 
-  return { 
-    message,
-    avg: Math.round(total/providedArr.length),
-    tips: providedArr
-  };
+  if(provided === null){
+    payload = {
+      message: "Let's start by adding some tips!",
+      avg: 0,
+      tips: [starterTip]
+    }
+  } else {
+    const providedArr = Object.values(provided);
+    let total = providedArr.reduce((totes, val) => {
+      return totes += val.amount;
+    }, 0);
+
+    payload = { 
+      message,
+      avg: Math.round(total/providedArr.length),
+      tips: providedArr
+    };
+  }
+  return payload;
 };
 
 //exported
@@ -68,13 +86,16 @@ export const getInitial = () => {
 };
 
 export const addTip = (amount, date, restaurant, shift) => {
+  const tipRef = firebase.database().ref('tips').push();
   tip = {
     restaurant,
     shift,
     amount: parseInt(amount),
     date,
-    uuid: firebase.auth().currentUser.uid
+    uuid: firebase.auth().currentUser.uid,
+    tId: tipRef.key
   };
+
 
   return (dispatch) => {
     const successAddAction = (tip) => {
@@ -99,11 +120,17 @@ export const addTip = (amount, date, restaurant, shift) => {
 };
 
 export const deleteTip = (tip) => {
+
   return (dispatch) => {
-  firebase.database().ref('tips/')
-    .remove(tip)
-      .then(dispatch({
+    const QueryLoc = firebase.database().ref('tips')
+    QueryLoc.orderByChild('tId').equalTo(tip.tId).on('child_added', (snapshot) => {
+      snapshot.ref.remove()
+    })
+      .then(() => dispatch({
         type: DELETE_TIP,
+        payload: {
+          message: 'tip deleted successfully!'
+        }
       }))
       .catch(err => dispatch({
         type: DELETE_TIP,
@@ -153,6 +180,7 @@ export const tipAmountChanged = (amount) => {
 };
 
 export const tipDateChanged = (date) => {
+  console.log(typeof(date));
   return {
     type: TIP_DATE_CHANGED,
     payload: date
