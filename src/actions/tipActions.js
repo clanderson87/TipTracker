@@ -119,11 +119,10 @@ export const addTip = (amount, date, restaurant, shift) => {
   };
 };
 
-export const deleteTip = (tip) => {
-
+export const deleteTip = ({ tId }) => {
   return (dispatch) => {
     const QueryLoc = firebase.database().ref('tips')
-    QueryLoc.orderByChild('tId').equalTo(tip.tId).on('child_added', (snapshot) => {
+    QueryLoc.orderByChild('tId').equalTo(tId).on('child_added', (snapshot) => {
       snapshot.ref.remove()
         .then(() => dispatch({
             type: DELETE_TIP,
