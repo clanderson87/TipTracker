@@ -125,19 +125,23 @@ export const deleteTip = (tip) => {
     const QueryLoc = firebase.database().ref('tips')
     QueryLoc.orderByChild('tId').equalTo(tip.tId).on('child_added', (snapshot) => {
       snapshot.ref.remove()
-    })
-      .then(() => dispatch({
-        type: DELETE_TIP,
-        payload: {
-          message: 'tip deleted successfully!'
-        }
-      }))
-      .catch(err => dispatch({
-        type: DELETE_TIP,
-        payload: {
-          message: err
-        }
-      }))
+        .then(() => dispatch({
+            type: DELETE_TIP,
+            payload: {
+              message: 'tip deleted successfully!'
+            }
+          }),
+          Actions.tipsDashboard({ type: 'reset' })
+        )
+        .catch(err => dispatch({
+            type: DELETE_TIP,
+            payload: {
+              message: err
+            }
+          }),
+          Actions.tipsDashboard({ type: 'reset' })
+        )
+      })
   }
 }
 
