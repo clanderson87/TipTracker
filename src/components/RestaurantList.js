@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import { Card, Text, Button, View, InputGroup, Input, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import firebase from 'firebase';
-import { enableSearch, chooseRestaurant, clearRestaurantSelection, addRestaurant, getInitialRestaurants } from '../actions/searchActions'
+import { enableSearch, 
+  chooseRestaurant, 
+  clearRestaurantSelection, 
+  addRestaurant, 
+  getInitialRestaurants } from '../actions/searchActions'
 import GOOGLE_PLACES_API_KEY from '../../secrets/GOOGLE_PLACES_API_KEY';
+import RestaurantDetail from './RestaurantDetail';
+
 
 class RestaurantList extends Component {
   componentDidMount(){
     this.props.getInitialRestaurants();
-  }
+  };
 
   renderList(){
     if(!this.props.search){
-      console.log("this.props.myRests is ", this.props.myRestaurants);
       if(this.props.error){
         return(
           <Text>{this.props.error}</Text>
@@ -30,7 +34,7 @@ class RestaurantList extends Component {
           <List 
             dataArray={this.props.myRestaurants}
             renderRow={(res) => 
-            <ListItem>
+            <ListItem button onPress={(res) => this.props.chooseRestaurant(res)}>
               <Text>{res.name}</Text>
             </ListItem>
             }
@@ -38,10 +42,10 @@ class RestaurantList extends Component {
         )
       }
     }
-  }
+  };
 
   startSearch(){
-    if(this.props.search && this.props.restaurant == undefined){
+    if(this.props.search){
       return (
         <GooglePlacesAutocomplete
           placeholder='Search'
@@ -52,28 +56,21 @@ class RestaurantList extends Component {
           renderDescription={(row) => row.description} // custom description render
           onPress={(data, details = null) => {
             console.log(details);
-            const { name, geometry, rating, formatted_address, place_id, price_level, photos } = details;
+            const { name, rating, formatted_address, place_id, price_level, photos } = details;
+            let pics = [];
+            if (photos){
+              photos.forEach((photo) => {
+                pics.push({photo_html: photo.html_attributions, photo_reference: photo.photo_reference})
+              })
+            }
+
             {this.props.chooseRestaurant({ 
               name,
-              geometry,
               address: formatted_address,
               gId: place_id,
               price: price_level || 0,
               rating: rating || 0,
-              photos: {
-                a: {
-                  photo_html: photos[0].html_attributions,
-                  photo_reference: photos[0].photo_reference
-                },
-                b: {
-                  photo_html: photos[1].html_attributions,
-                  photo_reference: photos[1].photo_reference
-                },
-                c: {
-                  photo_html: photos[2].html_attributions,
-                  photo_reference: photos[2].photo_reference
-                }
-              } || null
+              photos: pics
               })
             }// 'details' is provided when fetchDetails = true
           }}
@@ -121,26 +118,9 @@ class RestaurantList extends Component {
 
   renderRestaurant(){
     if(this.props.restaurant !== undefined){
-      return(
-        //So... I need to input-ize all of this so the user has a chance to alter the data before storage.
-        <Card>
-          <Text>{/*stylize this text! And also the other props in this area!*/}
-            {this.props.restaurant.name}
-            {/*<RestaurantDetail />goes here*/}
-          </Text>
-          <Button 
-            danger
-            onPress={() => this.props.clearRestaurantSelection()}>
-            <Text>Cancel</Text>
-          </Button>
-          <Button
-            onPress={()=> this.props.addRestaurant(this.props.restaurant)}>
-            <Text>Add</Text>
-          </Button>
-        </Card>
-      )
+      return <RestaurantDetail />
     }
-  }
+  };
 
   render() {
     return(
