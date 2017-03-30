@@ -13,6 +13,10 @@ import { connect } from 'react-redux';
 import {
   deleteTip
 } from '../actions/tipActions';
+import {
+  dayOfWeek,
+  monthOfYear
+} from '../common/dateHelpers'
 
 class TipDetail extends Component {
   
@@ -26,12 +30,17 @@ class TipDetail extends Component {
     })
     return rest.name;
   }
+
+  renderTipDate(){
+    const date = (new Date(this.props.tipDate));
+    return `${dayOfWeek(date.getDay())}, ${monthOfYear(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
+  }
   
   render(){
     return(
       <Card>
         <Text>You made ${this.props.tipAmount}</Text>
-        <Text>on {this.props.tipDate}</Text>
+        <Text>on {this.renderTipDate()}</Text>
         <Text>at {this.getRestaurantName()}</Text>
         <Text>during {this.props.tipShift}</Text>
         <Button

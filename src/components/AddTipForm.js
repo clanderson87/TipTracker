@@ -15,6 +15,7 @@ import {
   getInitial,
   getRestaurants,
   addTip,
+  editTip,
   tipAmountChanged,
   tipDateChanged,
   tipRestuarantChanged,
@@ -25,7 +26,7 @@ const Item = Picker.Item;
 
 class AddTipForm extends Component {
   componentDidMount(){
-    //this.props.getRestaurants();
+
   };
 
   renderPicker(){  
@@ -56,23 +57,43 @@ class AddTipForm extends Component {
         style={{width: 200}}
         date={this.props.tipDate}
         mode='date'
-        format='MM-DD-YYYY'
+        format='YYYY/MM/DD'
         confirmBtnText='Confirm'
         cancelBtnText='Cancel'
         onDateChange={(date) => this.props.tipDateChanged(date)}
         />
-    )
+    );
+  };
+
+  addOrEdit(tipAmount, tipDate, tipRestaurant, tipShift){
+    const mainProps = this.props;
+    if(mainProps.selectedTip !== null){
+      return {
+        onTouch() {mainProps.editTip({...mainProps.selectedTip, 
+                    amount: tipAmount, 
+                    date: tipDate, 
+                    restaurant: tipRestaurant, 
+                    shift: tipShift})},
+        text: 'Edit'
+      }
+    } else {
+      return {
+        onTouch() {mainProps.addTip(tipAmount, tipDate, tipRestaurant, tipShift)},
+        text: 'Add'
+      }
+    }
   }
 
   renderAddButton(){
-    const { tipAmount, tipDate, tipRestaurant, tipShift } = this.props
+    const { tipAmount, tipDate, tipRestaurant, tipShift } = this.props;
+    const btnDetails = this.addOrEdit(tipAmount, tipDate, tipRestaurant, tipShift)
     if((tipAmount && tipDate && tipRestaurant && tipShift)){
       return (
         <Button
           success
           block
-          onPress={() => this.props.addTip(tipAmount, tipDate, tipRestaurant, tipShift)}
-        ><Text>Add</Text>
+          onPress={() => btnDetails.onTouch()}
+        ><Text>{btnDetails.text}</Text>
         </Button>
       )
     } else {
@@ -80,9 +101,17 @@ class AddTipForm extends Component {
         <Button
           disabled
           block
-        ><Text>Add</Text>
+        ><Text>{btnDetails.text}</Text>
         </Button>
       )
+    }
+  }
+
+  getTipValue(){
+    if(this.props.tipAmount == null){
+      return this.props.tipAmount;
+    } else {
+      return this.props.tipAmount.toString();
     }
   }
 
@@ -95,7 +124,7 @@ class AddTipForm extends Component {
                 keyboardType='numeric' 
                 returnKeyType='done' 
                 onChangeText={(val) => this.props.tipAmountChanged(val)} 
-                value={this.props.tipAmount} />
+                value={this.getTipValue()} />
               {this.renderDatePicker()}
             </InputGroup>
             <InputGroup>
@@ -127,6 +156,7 @@ const mapStateToProps = ({ tip }) => {
   const {
     usersRestaurants,
     message,
+    selectedTip,
     tipAmount,
     tipDate,
     tipShift,
@@ -135,6 +165,7 @@ const mapStateToProps = ({ tip }) => {
   return {
     usersRestaurants,
     message,
+    selectedTip,
     tipAmount,
     tipDate,
     tipShift,
@@ -144,6 +175,7 @@ const mapStateToProps = ({ tip }) => {
 
 export default connect(mapStateToProps, {
   addTip,
+  editTip,
   getRestaurants,
   tipAmountChanged,
   tipRestuarantChanged,

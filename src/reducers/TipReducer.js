@@ -53,6 +53,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         tipAmount: null, 
         tipDate: INITIAL_STATE.tipDate,
         tipShift: INITIAL_STATE.tipShift,
+        message: payload.message || ''
       }
     case TIP_SHIFT_CHANGED:
       return { ...state, tipShift: payload };

@@ -8,6 +8,7 @@ import {
   DELETE_TIP,
   TIP_SELECTED,
   TIP_UNSELECTED,
+  EDIT_TIP,
   TIP_SHIFT_CHANGED,
   TIP_AMOUNT_CHANGED,
   TIP_DATE_CHANGED,
@@ -18,6 +19,30 @@ import {
 
 const getUsersProjected = (provided) => {
   //fill this in later...
+}
+
+const sanitizeShift = (shift) => {
+  switch(shift){
+    case 'Breakfast':
+      return '07:30:00';
+    case 'Brunch':
+      return '10:15:00';
+    case 'Lunch':
+      return '12:00:00';
+    case 'Happy Hour':
+      return '15:30:00';
+    case 'Dinner':
+      return '18:30:00';
+    case 'Late Night':
+      return '22:30:00';
+  }
+}
+
+const sanitizeDate = (date, shift) => {
+  if(typeof(date) !== 'string'){
+    date = (new Date(date).toLocaleDateString());
+  };
+  return (new Date(`${date} `+`${sanitizeShift(shift)}`).getTime());
 }
 
 const generatePayload = (provided = null, message = null) => {
@@ -87,15 +112,18 @@ export const getInitial = () => {
 
 export const addTip = (amount, date, restaurant, shift) => {
   const tipRef = firebase.database().ref('tips').push();
+
   tip = {
     restaurant,
     shift,
     amount: parseInt(amount),
-    date,
+    date: sanitizeDate(date, shift),
     uuid: firebase.auth().currentUser.uid,
-    tId: tipRef.key
+    tId: tipRef.key,
+    added: new Date().getTime()
   };
 
+  console.log('date is ', tip.date);
 
   return (dispatch) => {
     const successAddAction = (tip) => {
@@ -146,6 +174,9 @@ export const deleteTip = ({ tId }) => {
 
 export const selectTip = (tip) => {
   console.log('selectedTip is ', tip);
+  let d = new Date(tip.date);
+  tip.date = d;
+  
   return {
     type: TIP_SELECTED,
     payload: tip
@@ -154,9 +185,36 @@ export const selectTip = (tip) => {
 
 export const unselectTip = () => {
   return {
-    type: TIP_UNSELECTED
+    type: TIP_UNSELECTED,
+    payload: {}
   };
 };
+
+export const editTip = (tip) => {
+  console.log('editTip.tip is ', tip);
+
+  return (dispatch) => {
+    const QueryLoc = firebase.database().ref('tips');
+    QueryLoc.orderByChild('tId').equalTo(tip.tId).on('child_added', snapshot => {
+      const oldTip = snapshot.val();
+      const loc = snapshot.ref;
+      loc.set({ ...oldTip,
+        amount: parseInt(tip.amount),
+        date: sanitizeDate(tip.date, tip.shift),
+        restaurant: tip.restaurant,
+        shift: tip.shift,
+        lastUpdated: new Date().getTime()
+      })
+      .then(() => dispatch({
+        type: TIP_UNSELECTED,
+        payload: {
+          message: 'tip edited successfully!'
+        }}),
+        Actions.tipsDashboard({ type: 'reset' })
+      )
+    })
+  }
+}
 
 export const tipShiftChanged = (shift) => {
   return {
@@ -183,10 +241,15 @@ export const tipAmountChanged = (amount) => {
 };
 
 export const tipDateChanged = (date) => {
-  console.log(typeof(date));
+  console.log('tipDateChanged.date is ', date);
+  const splitDate = date.split('/');
+  console.log('tipDateChanged.splitDate is ', splitDate);
+  const d = new Date(splitDate[0], (splitDate [1] - 1), splitDate[2]);
+  console.log(d);
+
   return {
     type: TIP_DATE_CHANGED,
-    payload: date
+    payload: d
   };
 };
 
