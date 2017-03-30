@@ -123,8 +123,6 @@ export const addTip = (amount, date, restaurant, shift) => {
     added: new Date().getTime()
   };
 
-  console.log('date is ', tip.date);
-
   return (dispatch) => {
     const successAddAction = (tip) => {
       dispatch({
@@ -176,7 +174,7 @@ export const selectTip = (tip) => {
   console.log('selectedTip is ', tip);
   let d = new Date(tip.date);
   tip.date = d;
-  
+
   return {
     type: TIP_SELECTED,
     payload: tip
@@ -241,11 +239,8 @@ export const tipAmountChanged = (amount) => {
 };
 
 export const tipDateChanged = (date) => {
-  console.log('tipDateChanged.date is ', date);
   const splitDate = date.split('/');
-  console.log('tipDateChanged.splitDate is ', splitDate);
   const d = new Date(splitDate[0], (splitDate [1] - 1), splitDate[2]);
-  console.log(d);
 
   return {
     type: TIP_DATE_CHANGED,
