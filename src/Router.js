@@ -1,5 +1,6 @@
 import React from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
+import { Icon } from 'native-base';
 import LoginForm from './components/NBcommon/LoginForm';
 import RestaurantList from './components/RestaurantList';
 import TipsDashboard from './components/TipsDashboard';
@@ -17,20 +18,19 @@ const RouterComponent = () => {
           initial
         />
       </Scene>
-      {/*<Scene key="main">
-        <Scene
-          key="restaurantList"
-          component={RestaurantList}
-          title="My Restaurants"
-          initial
-        />
-      </Scene>*/}
       <Scene key="main">
         <Scene
           key="tipsDashboard"
           component={TipsDashboard}
           title="My Tips"
+          onRight={() => Actions.restaurantList()}
+          rightTitle='rest'
           initial
+        />
+        <Scene
+          key="restaurantList"
+          component={RestaurantList}
+          title="My Restaurants"
         />
         <Scene
           key='AddTip'

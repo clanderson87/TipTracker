@@ -8,7 +8,8 @@ import {
   RESTAURANT_ADD_FAILED,
   RESTAURANT_SUCCESSFULLY_ADDED,
   INITIAL_RESTAURANTS_AQUIRED,
-  INITIAL_RESTAURANTS_FAILED
+  INITIAL_RESTAURANTS_FAILED,
+  RESTAURANT_DELETED
 } from './types';
 
 
@@ -19,15 +20,15 @@ export const getInitialRestaurants = () => {
     
     firebase.database().ref(`users/${currentUser.uid}/restaurants`)
       .on('value', (snapshot) => {
-            console.log("snapshot is ", snapshot.val());
+        console.log('getInitialRestaurants.snapshot is ', snapshot.val());
             dispatch({
               type: INITIAL_RESTAURANTS_AQUIRED,
-              payload: snapshot.val()
-            })
+              payload: snapshot.val() 
+            });
         }
-      )
-  }
-}
+      );
+  };
+};
 
 export const enableSearch = () => {
   return {
@@ -59,39 +60,53 @@ export const addRestaurant = restaurant => {
         type: RESTAURANT_SUCCESSFULLY_ADDED,
         payload: rest
       })
-    }
+    };
 
     const failAddAction = (err) => {
       dispatch({
         type: RESTAURANT_ADD_FAILED,
         payload: err
       })
-    }
+    };
+
+    const initialAdd = () => {
+      fbRef.ref('restaurants').push({gId, name})
+    };
 
     fbRef.ref(`users/${currentUser.uid}/restaurants`) //adding to user's restaurants
       .push({gId, name})
         .then(
+          fbRef.ref(`restaurants`)
+            .orderByChild('gId')
+            .equalTo(gId)
+            .once('value')
+            .then(snapshot => {
+              if(snapshot.exists() === false){
+                initialAdd();
+              };
+            }),
           successAddAction(restaurant)
         )
         .catch(err => failAddAction(err));
-  }
-}
+  };
+};
 
-export const deleteRestaurant = restaurant => {
+export const deleteRestaurant = ({gId, name}) => {
   const { currentUser } = firebase.auth();
-  const toDelete = 
-    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
-      .orderByChild('gId').equalTo(`${restaurant.gId}`).once('value').then(snapshot => console.log(snapshot.val()));
-  
-  console.log(toDelete);
-  
-  
 
-  // toDelete.remove()
-  //   .then(() => {
-  //     console.log("Remove succeeded.")
-  //   })
-  //   .catch((err) => {
-  //     console.log("Remove failed: " + err.message)
-  //   });;
+  return (dispatch) => {
+
+    const successAction = () => {
+      dispatch({
+        type: RESTAURANT_DELETED,
+        payload: name + ' deleted successfully!'
+      });
+    }
+
+    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
+      .orderByChild('gId').equalTo(gId).on('child_added', 
+        snapshot => snapshot.ref.remove()
+        .then(() => successAction())
+      );
+  }
 }

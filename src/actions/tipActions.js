@@ -209,10 +209,10 @@ export const editTip = (tip) => {
           message: 'tip edited successfully!'
         }}),
         Actions.tipsDashboard({ type: 'reset' })
-      )
-    })
-  }
-}
+      );
+    });
+  };
+};
 
 export const tipShiftChanged = (shift) => {
   return {

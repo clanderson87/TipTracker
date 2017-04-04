@@ -14,7 +14,8 @@ class RestaurantDetail extends Component {
     const loopNestedObj = (obj, match) => {
       Object.entries(obj).forEach(([key, val]) => {
         if (val === match) {addable = false};
-        if (val && typeof val === 'object') loopNestedObj(val, match)
+        if ((val) && (typeof(val) === 'object')){ 
+          loopNestedObj(val, match)}
       });
     }; // blueprint code because that was annoying as hell.
     loopNestedObj(this.props.myRestaurants, this.props.restaurant.gId)
