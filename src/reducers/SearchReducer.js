@@ -33,7 +33,7 @@ export default (state = INITIAL_STATE, action) => {
     case RESTAURANT_ADD_FAILED:
       return { ...state, message: action.payload }
     case RESTAURANT_DELETED:
-      return { ...state, message: action.payload }
+      return { ...state, message: action.payload, restaurant: undefined }
     default:
       return state;
   };
