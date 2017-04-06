@@ -14,31 +14,37 @@ class RestaurantDetail extends Component {
     const loopNestedObj = (obj, match) => {
       Object.entries(obj).forEach(([key, val]) => {
         if (val === match) {addable = false};
-        if (val && typeof val === 'object') loopNestedObj(val, match)
+        if ((val) && (typeof(val) === 'object')){ 
+          loopNestedObj(val, match)}
       });
     }; // blueprint code because that was annoying as hell.
     loopNestedObj(this.props.myRestaurants, this.props.restaurant.gId)
+    console.log('addable is ', addable)
     if(addable === true){
       return (
         <View>
-          <Button 
-            danger
+          <Button
             onPress={() => this.props.clearRestaurantSelection()}>
             <Text>Cancel</Text>
           </Button>
           <Button
+            success
             onPress={()=> this.props.addRestaurant(this.props.restaurant)}>
-            <Text>Add</Text>
+            <Text>Add Restaurant</Text>
           </Button>
         </View>
       )
     } else {
         return (
           <View>
+            <Button 
+              onPress={() => this.props.clearRestaurantSelection()}>
+            <Text>Cancel</Text>
+          </Button>
             <Button
               danger
               onPress={() => this.props.deleteRestaurant(this.props.restaurant)}
-            ></Button>
+            ><Text>Delete this restaurant</Text></Button>
           </View>
         )
       }

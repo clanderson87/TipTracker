@@ -34,7 +34,7 @@ class RestaurantList extends Component {
           <List 
             dataArray={this.props.myRestaurants}
             renderRow={(res) => 
-            <ListItem button onPress={(res) => this.props.chooseRestaurant(res)}>
+            <ListItem button onPress={() => this.props.chooseRestaurant(res)}>
               <Text>{res.name}</Text>
             </ListItem>
             }

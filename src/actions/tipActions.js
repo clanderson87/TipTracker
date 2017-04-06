@@ -14,6 +14,7 @@ import {
   TIP_DATE_CHANGED,
   TIP_RESTAURANT_CHANGED
 } from './types';
+import { dayOfWeek } from '../common/dateHelpers';
 
 //private methods
 
@@ -44,6 +45,7 @@ const sanitizeDate = (date, shift) => {
   };
   return (new Date(`${date} `+`${sanitizeShift(shift)}`).getTime());
 }
+
 
 const generatePayload = (provided = null, message = null) => {
   const starterTip = {
@@ -112,7 +114,6 @@ export const getInitial = () => {
 
 export const addTip = (amount, date, restaurant, shift) => {
   const tipRef = firebase.database().ref('tips').push();
-
   tip = {
     restaurant,
     shift,
@@ -120,7 +121,12 @@ export const addTip = (amount, date, restaurant, shift) => {
     date: sanitizeDate(date, shift),
     uuid: firebase.auth().currentUser.uid,
     tId: tipRef.key,
-    added: new Date().getTime()
+    added: new Date().getTime(),
+    weekday: dayOfWeek(date.getDay())
+    //methods to add server side:
+      //weather
+      //events
+      //cuisene type
   };
 
   return (dispatch) => {
@@ -209,10 +215,10 @@ export const editTip = (tip) => {
           message: 'tip edited successfully!'
         }}),
         Actions.tipsDashboard({ type: 'reset' })
-      )
-    })
-  }
-}
+      );
+    });
+  };
+};
 
 export const tipShiftChanged = (shift) => {
   return {
