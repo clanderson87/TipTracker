@@ -93,8 +93,6 @@ export const addRestaurant = restaurant => {
 
 export const deleteRestaurant = ({gId, name}) => {
   const { currentUser } = firebase.auth();
-  const delRef = firebase.database().ref(`users/${currentUser.uid}/restaurants`)
-                  .orderByChild('gId').equalTo(gId)
   return (dispatch) => {
 
     const successAction = () => {
@@ -107,9 +105,11 @@ export const deleteRestaurant = ({gId, name}) => {
       });
     }
 
-    delRef.once('child_added', 
-        snapshot => snapshot.ref.remove()
-        .then(() => successAction()),
+    firebase.database().ref(`users/${currentUser.uid}/restaurants`)
+      .orderByChild('gId').equalTo(gId)
+        .once('child_added', 
+          snapshot => snapshot.ref.remove()
+          .then(() => successAction())
       );
   }
 }
