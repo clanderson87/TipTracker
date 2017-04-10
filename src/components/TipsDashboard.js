@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList } from 
+import { FlatList, TouchableOpacity } from 'react-native';
 import { View, Text, List, ListItem, Button } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux';
@@ -31,13 +31,12 @@ class TipsDashboard extends Component {
   renderList(){
     if(this.props.usersTips){
       return(
-          <List dataArray={this.props.usersTips}
-              renderRow={(tip) => 
-                <ListItem onPress={() => this.goToTipDetail(tip)}>
-                  <Text>{tip.amount}</Text>  
-                </ListItem>
-              }
-              
+          <FlatList data={this.props.usersTips}
+              renderItem={(tip) => (
+                <TouchableOpacity onPress={() => this.goToTipDetail(tip)}>
+                  <Text>{tip.amount}</Text>
+                </TouchableOpacity>
+              )}
           />
       )
     }else{
@@ -77,7 +76,7 @@ class TipsDashboard extends Component {
     return(
       <Grid style={styles.viewStyle}>
         <Row size={1}>{this.renderAverage()}</Row>
-        <Row size={4}>{this.renderList()}</Row>
+        {/*<Row size={4}>{this.renderList()}</Row>*/}
         {this.renderAddButton()}
       </Grid>
     )
