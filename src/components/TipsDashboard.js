@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { FlatList } from 
 import { View, Text, List, ListItem, Button } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { 
@@ -29,13 +31,14 @@ class TipsDashboard extends Component {
   renderList(){
     if(this.props.usersTips){
       return(
-        <List dataArray={this.props.usersTips}
-            renderRow={(tip) => 
-              <ListItem onPress={() => this.goToTipDetail(tip)}>
-                <Text>{tip.amount}</Text>  
-              </ListItem>
-            }
-        />
+          <List dataArray={this.props.usersTips}
+              renderRow={(tip) => 
+                <ListItem onPress={() => this.goToTipDetail(tip)}>
+                  <Text>{tip.amount}</Text>  
+                </ListItem>
+              }
+              
+          />
       )
     }else{
       return <Text>Add some tips to get started!</Text>
@@ -51,7 +54,7 @@ class TipsDashboard extends Component {
     return (
       <Button
         block
-        success
+        style={styles.addBtnStyle}
         onPress={()=>this.goToAddScreen()}>
         <Text>Add Tip!</Text>
       </Button>
@@ -60,20 +63,47 @@ class TipsDashboard extends Component {
 
   renderAverage(){
     return (
-      <Text>{this.props.usersAverage}</Text>
+      <Grid style={{backgroundColor: '#27aa45'}}>
+        <Row size={1}/>
+        <Row size={2}>
+          <Text style={styles.avgStyle}>{this.props.usersAverage}</Text>
+        </Row>
+        <Row size={1} />
+      </Grid>
     );
   };
 
   render(){
     return(
-      <View>
-        {this.renderAverage()}
-        {this.renderList()}
+      <Grid style={styles.viewStyle}>
+        <Row size={1}>{this.renderAverage()}</Row>
+        <Row size={4}>{this.renderList()}</Row>
         {this.renderAddButton()}
-      </View>
+      </Grid>
     )
   }
 };
+
+const styles = {
+  viewStyle : {
+    flexDirection: 'column',
+  },
+  listItemStyle : {
+
+  },
+  avgStyle : {
+    flex: 1,
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#f9fcfa'
+  },
+  addBtnStyle : {
+    backgroundColor: '#27aa45',
+    marginBottom: 10
+  }
+}
 
 const mapStateToProps = ({ tip }) => {
   const { usersTips,
